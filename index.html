@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>The Royal Wedding | Muhammad Sadiq & Arooj Saher</title>
   
-  <!-- Google Fonts & Font Awesome -->
+  <!-- Fonts & CDN Scripts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@500;600;700;800&family=Montserrat:wght@300;400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
@@ -14,15 +14,15 @@
 
   <style>
     :root {
-      --blush-bg: #f9f2f2;
-      --envelope-pink: #d99ca8;
-      --envelope-dark: #b67482;
+      --rose-pink: #d195a2;
+      --rose-dark: #b26f7e;
+      --rose-deep: #702636;
+      --gold-foil: linear-gradient(135deg, #ffe082 0%, #c59b27 50%, #7e5a0b 100%);
+      --gold-border: rgba(212, 175, 55, 0.4);
+      --bg-cream: #fcf8f8;
       --card-white: #ffffff;
-      --maroon: #81132a;
-      --gold: #d4af37;
-      --gold-dark: #9e7b16;
-      --text-main: #3d2b2f;
-      --text-muted: #7d6569;
+      --text-dark: #3b2a2e;
+      --text-muted: #73595e;
     }
 
     * {
@@ -33,9 +33,9 @@
     }
 
     body {
-      background: radial-gradient(circle at center, #2e1a22 0%, #15090d 100%);
+      background: radial-gradient(circle at center, #230d14 0%, #0c0407 100%);
       font-family: 'Montserrat', sans-serif;
-      color: var(--text-main);
+      color: var(--text-dark);
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -43,13 +43,13 @@
       overflow-x: hidden;
     }
 
-    .app-screen {
+    .main-viewport {
       width: 100%;
       max-width: 440px;
       min-height: 100vh;
-      background: var(--blush-bg);
+      background: var(--bg-cream);
       position: relative;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
       overflow-x: hidden;
     }
 
@@ -58,20 +58,20 @@
       position: fixed;
       top: 18px;
       right: calc(50% - 200px);
-      z-index: 90;
-      width: 40px;
-      height: 40px;
-      background: rgba(255, 255, 255, 0.85);
-      border: 1px solid rgba(217, 156, 168, 0.6);
+      z-index: 120;
+      width: 42px;
+      height: 42px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--rose-pink);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--maroon);
-      font-size: 15px;
+      color: var(--rose-deep);
+      font-size: 16px;
       cursor: pointer;
       box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-      backdrop-filter: blur(6px);
+      backdrop-filter: blur(8px);
       transition: all 0.3s ease;
     }
 
@@ -80,63 +80,54 @@
     }
 
     .music-btn.playing {
-      animation: rotateDisc 5s linear infinite;
+      animation: spinDisc 6s linear infinite;
     }
 
-    @keyframes rotateDisc {
+    @keyframes spinDisc {
       100% { transform: rotate(360deg); }
     }
 
-    /* =====================================
-       3D REALISTIC ENVELOPE OPENING OVERLAY
-       ===================================== */
-    #envelope-screen {
+    /* ====================================================
+       CINEMATIC 3D ENVELOPE UNPACKING ANIMATION
+       ==================================================== */
+    #envelope-stage {
       position: fixed;
       top: 0;
       left: 50%;
       transform: translateX(-50%);
       width: 100%;
       max-width: 440px;
-      height: 100%;
-      background: #f4e8e8;
+      height: 100vh;
+      background: radial-gradient(circle, #fcf4f5 0%, #ebd4d8 100%);
       z-index: 100;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 20px;
-      transition: opacity 0.8s ease 0.6s, visibility 0.8s ease 0.6s;
+      perspective: 1200px;
+      transition: opacity 0.8s ease 1.8s, visibility 0.8s ease 1.8s;
     }
 
-    #envelope-screen.opened {
+    #envelope-stage.completed {
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
     }
 
-    .envelope-container {
+    .envelope-box {
       position: relative;
       width: 320px;
-      height: 240px;
-      background: var(--envelope-pink);
-      border-radius: 12px;
-      box-shadow: 0 25px 45px rgba(0,0,0,0.22);
-      perspective: 1000px;
+      height: 230px;
+      background: var(--rose-pink);
+      border-radius: 8px;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+      transform-style: preserve-3d;
+      background-image: radial-gradient(#ffffff 12%, transparent 13%);
+      background-size: 14px 14px;
     }
 
-    /* Floral pattern texture */
-    .envelope-container::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: radial-gradient(#ffffff 10%, transparent 11%);
-      background-size: 12px 12px;
-      opacity: 0.25;
-      border-radius: 12px;
-    }
-
-    /* Flap */
-    .envelope-flap {
+    /* Top Flap */
+    .envelope-top-flap {
       position: absolute;
       top: 0;
       left: 0;
@@ -144,156 +135,170 @@
       height: 0;
       border-left: 160px solid transparent;
       border-right: 160px solid transparent;
-      border-top: 130px solid var(--envelope-dark);
+      border-top: 130px solid var(--rose-dark);
       transform-origin: top;
-      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-      z-index: 5;
+      transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 10;
     }
 
-    #envelope-screen.unseal .envelope-flap {
+    #envelope-stage.open .envelope-top-flap {
       transform: rotateX(180deg);
       z-index: 1;
     }
 
-    /* Inside Invitation Card Sliding Out */
-    .sliding-card {
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      width: 290px;
-      height: 210px;
-      background: #ffffff;
-      border-radius: 8px;
-      border: 1px solid rgba(212, 175, 55, 0.4);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s;
-      z-index: 2;
-    }
-
-    #envelope-screen.unseal .sliding-card {
-      transform: translateY(-90px) scale(1.04);
-    }
-
-    /* Envelope Bottom Pocket */
-    .envelope-pocket {
+    /* Envelope Bottom Triangles Pocket */
+    .envelope-bottom-pocket {
       position: absolute;
       bottom: 0;
       left: 0;
       width: 0;
       height: 0;
-      border-left: 160px solid var(--envelope-pink);
-      border-right: 160px solid var(--envelope-pink);
-      border-bottom: 125px solid var(--envelope-dark);
-      border-radius: 0 0 12px 12px;
-      z-index: 4;
+      border-left: 160px solid var(--rose-pink);
+      border-right: 160px solid var(--rose-pink);
+      border-bottom: 120px solid var(--rose-dark);
+      border-radius: 0 0 8px 8px;
+      z-index: 5;
       pointer-events: none;
     }
 
-    /* Golden Wax Seal */
-    .wax-seal {
+    /* The Real Card Hidden Inside Envelope */
+    .envelope-letter {
       position: absolute;
-      top: 100px;
+      top: 12px;
+      left: 12px;
+      width: 296px;
+      height: 206px;
+      background: #ffffff;
+      border-radius: 6px;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      z-index: 2;
+      transition: transform 1.1s cubic-bezier(0.25, 1, 0.5, 1) 0.6s, opacity 0.5s ease 1.7s;
+    }
+
+    #envelope-stage.open .envelope-letter {
+      transform: translateY(-160px) scale(1.08);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.35);
+    }
+
+    /* Realistic 3D Golden Wax Seal */
+    .wax-seal-btn {
+      position: absolute;
+      top: 96px;
       left: 50%;
       transform: translate(-50%, -50%);
       width: 82px;
       height: 82px;
-      background: radial-gradient(circle at 30% 30%, #ffe994, #c99324 60%, #855b0a 100%);
+      background: var(--gold-foil);
       border-radius: 50%;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.35), inset 0 2px 4px rgba(255,255,255,0.6);
-      z-index: 10;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.4), inset 0 2px 6px rgba(255,255,255,0.7);
+      border: 2px dashed rgba(255, 255, 255, 0.4);
+      z-index: 25;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      border: 2px dashed rgba(255, 255, 255, 0.4);
-      animation: pulseGlow 2.2s infinite ease-in-out;
-      transition: transform 0.4s ease, opacity 0.4s ease;
+      animation: sealBreathing 2.2s infinite ease-in-out;
+      transition: all 0.4s ease;
     }
 
-    #envelope-screen.unseal .wax-seal {
-      transform: translate(-50%, -50%) scale(0.6);
+    @keyframes sealBreathing {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(1.08); box-shadow: 0 12px 30px rgba(212, 175, 55, 0.6); }
+    }
+
+    #envelope-stage.open .wax-seal-btn {
+      transform: translate(-50%, -50%) scale(0.3);
       opacity: 0;
       pointer-events: none;
     }
 
-    @keyframes pulseGlow {
-      0%, 100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 6px 18px rgba(0,0,0,0.35); }
-      50% { transform: translate(-50%, -50%) scale(1.06); box-shadow: 0 10px 25px rgba(201, 147, 36, 0.6); }
-    }
-
-    .seal-text-top {
+    .seal-tap {
       font-size: 8px;
-      letter-spacing: 1.5px;
-      color: #5c3e03;
       font-weight: 700;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
-    }
-    .seal-monogram {
-      font-family: 'Cinzel', serif;
-      font-size: 20px;
-      font-weight: 800;
-      color: #4b3200;
+      color: #442a03;
     }
 
-    .envelope-instruction {
-      margin-top: 35px;
+    .seal-text {
+      font-family: 'Cinzel', serif;
+      font-size: 19px;
+      font-weight: 800;
+      color: #3d2300;
+    }
+
+    .seal-guide-text {
+      margin-top: 50px;
       font-size: 12px;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: var(--text-muted);
-      text-align: center;
+      color: var(--rose-deep);
       font-weight: 600;
+      transition: opacity 0.3s ease;
     }
 
-    /* =====================================
-       MAIN INVITATION CARD (TikTok STYLE)
-       ===================================== */
-    .invitation-body {
-      padding: 30px 18px 70px 18px;
+    #envelope-stage.open .seal-guide-text {
+      opacity: 0;
     }
 
-    /* Hero Portrait Arch */
-    .hero-arch-card {
-      background: linear-gradient(180deg, #1f0b14 0%, #3e1223 100%);
-      border-radius: 200px 200px 22px 22px;
-      padding: 40px 20px 35px 20px;
+    /* ====================================================
+       PAGE CARD CONTENT & TIMELINE
+       ==================================================== */
+    .card-content-area {
+      padding: 30px 18px 80px 18px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 1s ease 1.5s, transform 1s ease 1.5s;
+    }
+
+    .main-viewport.revealed .card-content-area {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Royal Top Arch */
+    .royal-hero-arch {
+      background: linear-gradient(180deg, #1b0a11 0%, #3a101e 100%);
+      border-radius: 220px 220px 22px 22px;
+      padding: 42px 20px 35px 20px;
       color: #ffffff;
       text-align: center;
-      box-shadow: 0 15px 35px rgba(62, 18, 35, 0.25);
-      border: 1px solid rgba(212, 175, 55, 0.35);
+      box-shadow: 0 15px 35px rgba(58, 16, 30, 0.25);
+      border: 1.5px solid var(--gold-border);
       position: relative;
-      margin-bottom: 30px;
+      margin-bottom: 28px;
     }
 
-    .bismillah {
+    .bismillah-text {
       font-family: 'Noto Nastaliq Urdu', serif;
-      font-size: 20px;
-      color: var(--gold);
+      font-size: 21px;
+      color: #f1cf75;
       line-height: 2.2;
     }
 
-    .ayah {
+    .quran-verse {
       font-size: 11px;
       font-style: italic;
       color: #edd1d7;
       margin-bottom: 22px;
     }
 
-    .nana-badge {
+    .grandfather-blessing-box {
       display: inline-block;
       border: 1px dashed rgba(212, 175, 55, 0.5);
       padding: 6px 16px;
       border-radius: 20px;
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.06);
       margin-bottom: 18px;
     }
 
-    .nana-badge small {
+    .grandfather-blessing-box small {
       font-size: 9.5px;
       letter-spacing: 1.5px;
       text-transform: uppercase;
@@ -301,14 +306,14 @@
       display: block;
     }
 
-    .nana-badge span {
+    .grandfather-blessing-box span {
       font-family: 'Cinzel', serif;
       font-size: 15px;
       color: #ffffff;
       font-weight: 700;
     }
 
-    .parents-intro {
+    .family-subtitle {
       font-size: 11.5px;
       letter-spacing: 1px;
       color: #f1dde2;
@@ -317,60 +322,60 @@
 
     .parents-name {
       font-family: 'Cinzel', serif;
-      font-size: 17px;
+      font-size: 18px;
       font-weight: 700;
-      color: var(--gold);
+      color: #f1cf75;
       margin: 6px 0 16px 0;
     }
 
-    .couple-display {
+    .couple-title-box {
       margin: 18px 0;
     }
 
-    .c-name {
+    .couple-name {
       font-family: 'Alex Brush', cursive;
       font-size: 44px;
       color: #ffffff;
       line-height: 1.1;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
     }
 
-    .c-symbol {
+    .couple-and {
       font-family: 'Cinzel', serif;
       font-size: 18px;
-      color: var(--gold);
+      color: #f1cf75;
       margin: 4px 0;
     }
 
-    /* =====================================
-       SCRATCH TO REVEAL CARD (VIDEO FEATURE)
-       ===================================== */
-    .scratch-section {
+    /* ====================================================
+       SCRATCH-TO-REVEAL COMPONENT (EXACT FROM VIDEO)
+       ==================================================== */
+    .scratch-card-container {
       background: #ffffff;
-      border-radius: 18px;
+      border-radius: 20px;
       padding: 26px 18px;
       text-align: center;
       box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-      margin-bottom: 30px;
-      border: 1px solid rgba(217, 156, 168, 0.4);
+      margin-bottom: 28px;
+      border: 1px solid rgba(209, 149, 162, 0.4);
     }
 
-    .scratch-title {
+    .scratch-header {
       font-family: 'Cinzel', serif;
       font-size: 15px;
       letter-spacing: 2.5px;
-      color: var(--maroon);
+      color: var(--rose-deep);
       text-transform: uppercase;
       margin-bottom: 6px;
     }
 
-    .scratch-subtitle {
-      font-size: 11.5px;
+    .scratch-sub {
+      font-size: 11px;
       color: var(--text-muted);
       margin-bottom: 20px;
     }
 
-    .scratch-box {
+    .scratch-canvas-holder {
       position: relative;
       width: 220px;
       height: 190px;
@@ -380,8 +385,7 @@
       justify-content: center;
     }
 
-    /* Secret Revealed Layer */
-    .revealed-content {
+    .revealed-date-card {
       position: absolute;
       width: 100%;
       height: 100%;
@@ -391,30 +395,29 @@
       justify-content: center;
       background: #fff8f9;
       border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
-      border: 2px solid var(--envelope-pink);
+      border: 2px solid var(--rose-pink);
       padding: 15px;
     }
 
-    .revealed-content i {
-      color: var(--maroon);
+    .revealed-date-card i {
+      color: var(--rose-deep);
       font-size: 20px;
       margin-bottom: 6px;
     }
 
-    .revealed-content h4 {
+    .revealed-date-card h4 {
       font-family: 'Cinzel', serif;
-      font-size: 15px;
-      color: var(--maroon);
+      font-size: 16px;
+      color: var(--rose-deep);
     }
 
-    .revealed-content p {
-      font-size: 11.5px;
+    .revealed-date-card p {
+      font-size: 12px;
       color: var(--text-muted);
       font-weight: 600;
       margin-top: 4px;
     }
 
-    /* Scratch Canvas Overlay */
     #scratchCanvas {
       position: absolute;
       top: 0;
@@ -426,45 +429,45 @@
       touch-action: none;
     }
 
-    /* =====================================
-       COUNTDOWN TIMER (CLEAN PINK TONE)
-       ===================================== */
-    .timer-wrap {
+    /* ====================================================
+       COUNTDOWN TIMER (CLEAN PINK TILE STYLE)
+       ==================================================== */
+    .timer-section {
       margin: 25px 0 35px 0;
       text-align: center;
     }
 
-    .timer-header {
+    .timer-heading {
       font-family: 'Cinzel', serif;
       font-size: 13px;
       letter-spacing: 2.5px;
-      color: var(--maroon);
+      color: var(--rose-deep);
       text-transform: uppercase;
       margin-bottom: 12px;
     }
 
-    .timer-row {
+    .timer-grid-box {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 8px;
     }
 
-    .timer-card {
+    .timer-tile-card {
       background: #ffffff;
-      border: 1px solid rgba(217, 156, 168, 0.5);
+      border: 1px solid rgba(209, 149, 162, 0.4);
       border-radius: 12px;
       padding: 12px 4px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.03);
     }
 
-    .timer-val {
+    .timer-tile-num {
       font-family: 'Cinzel', serif;
       font-size: 20px;
       font-weight: 700;
-      color: var(--maroon);
+      color: var(--rose-deep);
     }
 
-    .timer-lbl {
+    .timer-tile-lbl {
       font-size: 9px;
       text-transform: uppercase;
       letter-spacing: 1px;
@@ -472,58 +475,58 @@
       margin-top: 2px;
     }
 
-    /* =====================================
-       TIMELINE EVENTS (MEHNDI, BARAT, WALIMA)
-       ===================================== */
-    .section-title {
+    /* ====================================================
+       PROGRAM TIMELINE (MEHNDI, BARAT, WALIMA)
+       ==================================================== */
+    .section-headline {
       font-family: 'Cinzel', serif;
       font-size: 16px;
       letter-spacing: 2.5px;
-      color: var(--maroon);
+      color: var(--rose-deep);
       text-align: center;
       text-transform: uppercase;
       margin-bottom: 20px;
     }
 
-    .event-card {
+    .timeline-card {
       background: #ffffff;
       border-radius: 16px;
       padding: 20px;
       margin-bottom: 18px;
-      border: 1px solid rgba(217, 156, 168, 0.4);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+      border: 1px solid rgba(209, 149, 162, 0.35);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.03);
       position: relative;
     }
 
-    .event-card.featured {
-      border-left: 5px solid var(--maroon);
+    .timeline-card.barat-accent {
+      border-left: 5px solid var(--rose-deep);
     }
 
-    .event-top {
+    .timeline-top-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 12px;
     }
 
-    .event-name {
+    .event-title {
       font-family: 'Cinzel', serif;
       font-size: 17px;
       font-weight: 700;
-      color: var(--maroon);
+      color: var(--rose-deep);
     }
 
-    .event-chip {
-      background: #fcf1f3;
-      color: var(--maroon);
+    .event-date-pill {
+      background: #fbf1f3;
+      color: var(--rose-deep);
       font-size: 11px;
       font-weight: 700;
       padding: 4px 10px;
       border-radius: 15px;
-      border: 1px solid rgba(217, 156, 168, 0.4);
+      border: 1px solid rgba(209, 149, 162, 0.4);
     }
 
-    .event-detail {
+    .event-info-text {
       display: flex;
       gap: 10px;
       font-size: 12.5px;
@@ -532,17 +535,17 @@
       line-height: 1.4;
     }
 
-    .event-detail i {
-      color: var(--maroon);
+    .event-info-text i {
+      color: var(--rose-deep);
       margin-top: 3px;
     }
 
-    .direction-btn {
+    .map-btn {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      background: var(--maroon);
+      background: var(--rose-deep);
       color: #ffffff;
       text-decoration: none;
       font-size: 12px;
@@ -550,46 +553,46 @@
       padding: 12px;
       border-radius: 10px;
       margin-top: 14px;
-      box-shadow: 0 4px 12px rgba(129, 19, 42, 0.25);
+      box-shadow: 0 4px 12px rgba(112, 38, 54, 0.25);
     }
 
     /* RSVP Form */
-    .rsvp-box {
+    .rsvp-form-container {
       background: #ffffff;
       border-radius: 18px;
       padding: 24px 18px;
-      border: 1px solid rgba(217, 156, 168, 0.5);
+      border: 1px solid rgba(209, 149, 162, 0.45);
       box-shadow: 0 8px 25px rgba(0,0,0,0.04);
       margin-top: 30px;
     }
 
-    .form-group {
+    .form-group-item {
       margin-bottom: 14px;
     }
 
-    .form-group label {
+    .form-group-item label {
       display: block;
       font-size: 11px;
       font-weight: 700;
       letter-spacing: 1px;
       text-transform: uppercase;
-      color: var(--text-main);
+      color: var(--text-dark);
       margin-bottom: 6px;
     }
 
-    .form-group input, .form-group select {
+    .form-group-item input, .form-group-item select {
       width: 100%;
       padding: 12px;
       border: 1px solid #e5d2d5;
       border-radius: 10px;
       font-family: inherit;
       font-size: 13.5px;
-      color: var(--text-main);
+      color: var(--text-dark);
       outline: none;
       background: #fdfbfb;
     }
 
-    .whatsapp-submit {
+    .btn-whatsapp-confirm {
       width: 100%;
       background: #25D366;
       color: #ffffff;
@@ -607,26 +610,26 @@
       margin-top: 10px;
     }
 
-    /* Footer Regards */
-    .footer-regards {
+    /* Warm Regards Section */
+    .closing-regards {
       text-align: center;
       margin-top: 35px;
       padding-top: 25px;
-      border-top: 1px dashed rgba(217, 156, 168, 0.6);
+      border-top: 1px dashed rgba(209, 149, 162, 0.6);
     }
 
-    .footer-regards h6 {
+    .closing-regards h6 {
       font-size: 11px;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: var(--maroon);
+      color: var(--rose-deep);
       margin-bottom: 6px;
     }
 
-    .footer-regards p {
+    .closing-regards p {
       font-size: 13.5px;
       font-weight: 600;
-      color: var(--text-main);
+      color: var(--text-dark);
       line-height: 1.6;
     }
   </style>
@@ -634,172 +637,172 @@
 <body>
 
   <!-- Floating Audio Button -->
-  <button class="music-btn" id="audioToggle" onclick="toggleAudio()">
+  <button class="music-btn" id="audioToggle" onclick="handleAudioToggle()">
     <i class="fa-solid fa-music"></i>
   </button>
-  <audio id="weddingMusic" loop preload="auto">
+  <audio id="weddingPlayer" loop preload="auto">
     <source src="music.mp3" type="audio/mp3">
-    <!-- Online Fallback -->
+    <!-- High Reliability Fallback -->
     <source src="https://assets.mixkit.co/music/preview/mixkit-indian-traditional-instrumental-501.mp3" type="audio/mp3">
   </audio>
 
-  <div class="app-screen">
+  <div class="main-viewport" id="viewportMain">
 
-    <!-- 1. ENVELOPE OPENING OVERLAY (VIDEO STYLE) -->
-    <div id="envelope-screen">
-      <div class="envelope-container">
-        <div class="envelope-flap"></div>
-        <div class="sliding-card">
-          <span style="font-family:'Alex Brush', cursive; font-size: 26px; color: var(--maroon);">The Wedding Of</span>
+    <!-- 1. CINEMATIC 3D UNPACKING ENVELOPE (VIDEO STYLE) -->
+    <div id="envelope-stage">
+      <div class="envelope-box">
+        <div class="envelope-top-flap"></div>
+        <div class="envelope-letter">
+          <span style="font-family:'Alex Brush', cursive; font-size: 26px; color: var(--rose-deep);">The Royal Wedding</span>
           <h3 style="font-family:'Cinzel', serif; font-size: 15px; color: #333; margin-top: 4px;">Muhammad Sadiq</h3>
-          <span style="font-size: 12px; color: var(--gold);">&</span>
+          <span style="font-size: 12px; color: #c59b27;">&</span>
           <h3 style="font-family:'Cinzel', serif; font-size: 15px; color: #333;">Arooj Saher</h3>
         </div>
-        <div class="envelope-pocket"></div>
-        
-        <!-- Interactive Wax Seal -->
-        <div class="wax-seal" onclick="unsealEnvelope()">
-          <span class="seal-text-top">Tap To</span>
-          <span class="seal-monogram">OPEN</span>
+        <div class="envelope-bottom-pocket"></div>
+
+        <!-- 3D Wax Seal with Tap Trigger -->
+        <div class="wax-seal-btn" onclick="startCinematicUnseal()">
+          <span class="seal-tap">Tap To</span>
+          <span class="seal-text">OPEN</span>
         </div>
       </div>
-      <div class="envelope-instruction">
+      <div class="seal-guide-text">
         <i class="fa-regular fa-envelope"></i> Tap the golden seal to open
       </div>
     </div>
 
-    <!-- 2. MAIN SCROLLABLE INVITATION -->
-    <div class="invitation-body">
-      
-      <!-- Royal Arch Top Card -->
-      <div class="hero-arch-card">
-        <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
-        <div class="ayah">"And We created you in pairs" (Surah An-Naba: 8)</div>
+    <!-- 2. MAIN SCROLLABLE WEDDING INVITATION -->
+    <div class="card-content-area">
 
-        <div class="nana-badge">
-          <small>Under the affectionate prayers of</small>
+      <!-- Grand Arch Top Banner -->
+      <div class="royal-hero-arch">
+        <div class="bismillah-text">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+        <div class="quran-verse">"And We created you in pairs" (Surah An-Naba: 8)</div>
+
+        <div class="grandfather-blessing-box">
+          <small>Under the affectionate blessings of</small>
           <span>Sher Ali (Grandfather)</span>
         </div>
 
-        <div class="parents-intro">With the divine blessings of Almighty Allah</div>
+        <div class="family-subtitle">With the divine blessings of Almighty Allah</div>
         <div class="parents-name">Mr. & Mrs. Arshad Ali</div>
-        <div class="parents-intro">cordially invite you to celebrate the wedding celebrations of their beloved son</div>
+        <div class="family-subtitle">cordially invite you to celebrate the wedding celebrations of their beloved son</div>
 
-        <div class="couple-display">
-          <div class="c-name">Muhammad Sadiq</div>
-          <div class="c-symbol">&</div>
-          <div class="c-name">Arooj Saher</div>
+        <div class="couple-title-box">
+          <div class="couple-name">Muhammad Sadiq</div>
+          <div class="couple-and">&</div>
+          <div class="couple-name">Arooj Saher</div>
         </div>
       </div>
 
-      <!-- Scratch to Reveal Card (Exact TikTok Video Feature) -->
-      <div class="scratch-section">
-        <div class="scratch-title">Scratch to Reveal Date</div>
-        <div class="scratch-subtitle">Ungli ya mouse se dil ko scratch karein</div>
+      <!-- Scratch to Reveal Date (As seen in Video) -->
+      <div class="scratch-card-container">
+        <div class="scratch-header">Scratch to Reveal Date</div>
+        <div class="scratch-sub">Ungli ya mouse se dil ko scratch karein</div>
         
-        <div class="scratch-box">
-          <div class="revealed-content">
+        <div class="scratch-canvas-holder">
+          <div class="revealed-date-card">
             <i class="fa-solid fa-heart"></i>
             <h4>Save The Dates</h4>
             <p>24, 25 & 26 Nov 2026</p>
-            <p style="font-size: 10px; color: var(--maroon); margin-top: 4px;">Insha'Allah</p>
+            <p style="font-size: 10.5px; color: var(--rose-deep); margin-top: 4px;">Insha'Allah</p>
           </div>
           <canvas id="scratchCanvas"></canvas>
         </div>
       </div>
 
       <!-- Live Countdown -->
-      <div class="timer-wrap">
-        <div class="timer-header">Celebration Begins In</div>
-        <div class="timer-row">
-          <div class="timer-card">
-            <div class="timer-val" id="d_val">00</div>
-            <div class="timer-lbl">Days</div>
+      <div class="timer-section">
+        <div class="timer-heading">Celebrations Begin In</div>
+        <div class="timer-grid-box">
+          <div class="timer-tile-card">
+            <div class="timer-tile-num" id="d_val">00</div>
+            <div class="timer-tile-lbl">Days</div>
           </div>
-          <div class="timer-card">
-            <div class="timer-val" id="h_val">00</div>
-            <div class="timer-lbl">Hours</div>
+          <div class="timer-tile-card">
+            <div class="timer-tile-num" id="h_val">00</div>
+            <div class="timer-tile-lbl">Hours</div>
           </div>
-          <div class="timer-card">
-            <div class="timer-val" id="m_val">00</div>
-            <div class="timer-lbl">Mins</div>
+          <div class="timer-tile-card">
+            <div class="timer-tile-num" id="m_val">00</div>
+            <div class="timer-tile-lbl">Mins</div>
           </div>
-          <div class="timer-card">
-            <div class="timer-val" id="s_val">00</div>
-            <div class="timer-lbl">Secs</div>
+          <div class="timer-tile-card">
+            <div class="timer-tile-num" id="s_val">00</div>
+            <div class="timer-tile-lbl">Secs</div>
           </div>
         </div>
       </div>
 
-      <!-- Event Timeline -->
-      <div class="section-title">Program Timeline</div>
+      <!-- Events Itinerary -->
+      <div class="section-headline">Program Timeline</div>
 
       <!-- Mehndi -->
-      <div class="event-card">
-        <div class="event-top">
-          <span class="event-name">Mehndi Night</span>
-          <span class="event-chip">24 Nov 2026</span>
+      <div class="timeline-card">
+        <div class="timeline-top-row">
+          <span class="event-title">Mehndi Night</span>
+          <span class="event-date-pill">24 Nov 2026</span>
         </div>
-        <div class="event-detail">
+        <div class="event-info-text">
           <i class="fa-regular fa-clock"></i>
           <span>08:00 PM Onwards</span>
         </div>
-        <div class="event-detail">
+        <div class="event-info-text">
           <i class="fa-solid fa-location-dot"></i>
           <span>MS SEO Agency, Faisalabad</span>
         </div>
-        <a class="direction-btn" href="https://maps.app.goo.gl/pQsDfjx8cx64wBdz7" target="_blank">
+        <a class="map-btn" href="https://maps.app.goo.gl/pQsDfjx8cx64wBdz7" target="_blank">
           <i class="fa-solid fa-diamond-turn-right"></i> View Location on Google Maps
         </a>
       </div>
 
       <!-- Barat -->
-      <div class="event-card featured">
-        <div class="event-top">
-          <span class="event-name">Barat Ceremony</span>
-          <span class="event-chip">25 Nov 2026</span>
+      <div class="timeline-card barat-accent">
+        <div class="timeline-top-row">
+          <span class="event-title">Barat Ceremony</span>
+          <span class="event-date-pill">25 Nov 2026</span>
         </div>
-        <div class="event-detail">
+        <div class="event-info-text">
           <i class="fa-regular fa-clock"></i>
           <span>06:00 PM to 10:00 PM</span>
         </div>
-        <div class="event-detail">
+        <div class="event-info-text">
           <i class="fa-solid fa-location-dot"></i>
           <span>Taj Mahal Marquee, Near GO Petrol Pump, Samundri Road, Faisalabad</span>
         </div>
-        <a class="direction-btn" href="https://maps.google.com/?q=Taj+Mahal+Marquee+Samundri+Road+Faisalabad" target="_blank">
+        <a class="map-btn" href="https://maps.google.com/?q=Taj+Mahal+Marquee+Samundri+Road+Faisalabad" target="_blank">
           <i class="fa-solid fa-diamond-turn-right"></i> View Location on Google Maps
         </a>
       </div>
 
       <!-- Walima -->
-      <div class="event-card featured">
-        <div class="event-top">
-          <span class="event-name">Walima Reception</span>
-          <span class="event-chip">26 Nov 2026</span>
+      <div class="timeline-card barat-accent">
+        <div class="timeline-top-row">
+          <span class="event-title">Walima Reception</span>
+          <span class="event-date-pill">26 Nov 2026</span>
         </div>
-        <div class="event-detail">
+        <div class="event-info-text">
           <i class="fa-regular fa-clock"></i>
           <span>06:00 PM to 10:00 PM</span>
         </div>
-        <div class="event-detail">
+        <div class="event-info-text">
           <i class="fa-solid fa-location-dot"></i>
           <span>Taj Mahal Marquee, Near GO Petrol Pump, Samundri Road, Faisalabad</span>
         </div>
-        <a class="direction-btn" href="https://maps.google.com/?q=Taj+Mahal+Marquee+Samundri+Road+Faisalabad" target="_blank">
+        <a class="map-btn" href="https://maps.google.com/?q=Taj+Mahal+Marquee+Samundri+Road+Faisalabad" target="_blank">
           <i class="fa-solid fa-diamond-turn-right"></i> View Location on Google Maps
         </a>
       </div>
 
       <!-- RSVP Form -->
-      <div class="rsvp-box">
-        <div class="section-title" style="margin-bottom: 14px;">RSVP Confirmation</div>
-        <form onsubmit="sendWhatsAppRSVP(event)">
-          <div class="form-group">
+      <div class="rsvp-form-container">
+        <div class="section-headline" style="margin-bottom: 14px;">RSVP Confirmation</div>
+        <form onsubmit="handleWhatsAppRSVP(event)">
+          <div class="form-group-item">
             <label>Your Full Name</label>
             <input type="text" id="rsvp_name" placeholder="Tariq Mehmood" required>
           </div>
-          <div class="form-group">
+          <div class="form-group-item">
             <label>Attending Guests</label>
             <select id="rsvp_count">
               <option value="1 Person">1 Person</option>
@@ -808,7 +811,7 @@
               <option value="Family Members">With Family</option>
             </select>
           </div>
-          <div class="form-group">
+          <div class="form-group-item">
             <label>Events Attending</label>
             <select id="rsvp_events">
               <option value="All Functions (Mehndi, Barat, Walima)">All Functions (Mehndi, Barat, Walima)</option>
@@ -816,14 +819,14 @@
               <option value="Walima Reception Only">Walima Reception Only</option>
             </select>
           </div>
-          <button type="submit" class="whatsapp-submit">
+          <button type="submit" class="btn-whatsapp-confirm">
             <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i> Confirm via WhatsApp
           </button>
         </form>
       </div>
 
       <!-- Family Close -->
-      <div class="footer-regards">
+      <div class="closing-regards">
         <h6>Awaiting Your Warm Presence</h6>
         <p>
           Aqib Ali & Mrs. Aqib<br>
@@ -836,33 +839,45 @@
   </div>
 
   <script>
-    // 1. Envelope Unseal Animation + Sound Play
-    const audio = document.getElementById('weddingMusic');
+    // 1. Cinematic Envelope Sequence
+    const player = document.getElementById('weddingPlayer');
     const audioBtn = document.getElementById('audioToggle');
     let isPlaying = false;
 
-    function unsealEnvelope() {
-      const screen = document.getElementById('envelope-screen');
-      screen.classList.add('unseal');
+    function startCinematicUnseal() {
+      const stage = document.getElementById('envelope-stage');
+      const viewport = document.getElementById('viewportMain');
       
-      // Auto play audio upon opening
-      audio.play().then(() => {
+      // Step A: Trigger flap open and letter lift
+      stage.classList.add('open');
+
+      // Step B: Auto play audio seamlessly on interaction
+      player.play().then(() => {
         isPlaying = true;
         audioBtn.classList.add('playing');
-      }).catch(e => console.log("Audio awaiting user interaction:", e));
+      }).catch(e => console.log("Audio waiting:", e));
 
+      // Step C: Trigger confetti celebration burst
+      confetti({
+        particleCount: 80,
+        spread: 80,
+        origin: { y: 0.5 }
+      });
+
+      // Step D: Transition to full card view
       setTimeout(() => {
-        screen.classList.add('opened');
-      }, 1400);
+        viewport.classList.add('revealed');
+        stage.classList.add('completed');
+      }, 1800);
     }
 
-    function toggleAudio() {
+    function handleAudioToggle() {
       if (isPlaying) {
-        audio.pause();
+        player.pause();
         audioBtn.classList.remove('playing');
         isPlaying = false;
       } else {
-        audio.play().then(() => {
+        player.play().then(() => {
           audioBtn.classList.add('playing');
           isPlaying = true;
         }).catch(e => console.log(e));
@@ -870,81 +885,80 @@
     }
 
     // 2. Countdown Logic
-    const mehndiDate = new Date("November 24, 2026 20:00:00").getTime();
+    const targetEvent = new Date("November 24, 2026 20:00:00").getTime();
     setInterval(function() {
       const now = new Date().getTime();
-      const diff = mehndiDate - now;
+      const difference = targetEvent - now;
 
-      if (diff > 0) {
-        document.getElementById("d_val").innerText = Math.floor(diff / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
-        document.getElementById("h_val").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
-        document.getElementById("m_val").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
-        document.getElementById("s_val").innerText = Math.floor((diff % (1000 * 60)) / 1000).toString().padStart(2, '0');
+      if (difference > 0) {
+        document.getElementById("d_val").innerText = Math.floor(difference / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+        document.getElementById("h_val").innerText = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+        document.getElementById("m_val").innerText = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+        document.getElementById("s_val").innerText = Math.floor((difference % (1000 * 60)) / 1000).toString().padStart(2, '0');
       }
     }, 1000);
 
-    // 3. Scratch to Reveal Canvas Setup (Dusty Pink Heart Glitter)
-    const canvas = document.getElementById('scratchCanvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = 220;
-    canvas.height = 190;
+    // 3. Scratch Canvas Setup (Dusty Pink Heart with Scratch Effect)
+    const scratchCanvas = document.getElementById('scratchCanvas');
+    const sCtx = scratchCanvas.getContext('2d');
+    scratchCanvas.width = 220;
+    scratchCanvas.height = 190;
 
-    function initScratch() {
-      ctx.fillStyle = '#d99ca8'; // Dusky Pink coating
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    function renderScratchLayer() {
+      sCtx.fillStyle = '#d195a2';
+      sCtx.fillRect(0, 0, scratchCanvas.width, scratchCanvas.height);
 
-      // Heart shaped mask / sparkles overlay
-      ctx.fillStyle = '#b67482';
-      ctx.font = 'bold 13px Montserrat';
-      ctx.textAlign = 'center';
-      ctx.fillText('SCRATCH HERE ❤', 110, 100);
+      sCtx.fillStyle = '#702636';
+      sCtx.font = 'bold 13px Montserrat';
+      sCtx.textAlign = 'center';
+      sCtx.fillText('SCRATCH HERE ❤', 110, 100);
     }
-    initScratch();
+    renderScratchLayer();
 
-    let isScratching = false;
-    let scratchedPixels = 0;
-    let celebrated = false;
+    let scratching = false;
+    let revealedPercent = 0;
+    let didCelebrate = false;
 
-    function scratch(e) {
-      if (!isScratching) return;
-      const rect = canvas.getBoundingClientRect();
-      const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
-      const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
+    function scratchCard(e) {
+      if (!scratching) return;
+      const bRect = scratchCanvas.getBoundingClientRect();
+      const xPos = (e.clientX || (e.touches && e.touches[0].clientX)) - bRect.left;
+      const yPos = (e.clientY || (e.touches && e.touches[0].clientY)) - bRect.top;
 
-      ctx.globalCompositeOperation = 'destination-out';
-      ctx.beginPath();
-      ctx.arc(x, y, 18, 0, Math.PI * 2);
-      ctx.fill();
+      sCtx.globalCompositeOperation = 'destination-out';
+      sCtx.beginPath();
+      sCtx.arc(xPos, yPos, 20, 0, Math.PI * 2);
+      sCtx.fill();
 
-      scratchedPixels++;
-      if (scratchedPixels > 45 && !celebrated) {
-        celebrated = true;
+      revealedPercent++;
+      if (revealedPercent > 40 && !didCelebrate) {
+        didCelebrate = true;
         confetti({
-          particleCount: 60,
-          spread: 70,
+          particleCount: 50,
+          spread: 60,
           origin: { y: 0.6 }
         });
       }
     }
 
-    canvas.addEventListener('mousedown', () => isScratching = true);
-    canvas.addEventListener('mouseup', () => isScratching = false);
-    canvas.addEventListener('mousemove', scratch);
+    scratchCanvas.addEventListener('mousedown', () => scratching = true);
+    scratchCanvas.addEventListener('mouseup', () => scratching = false);
+    scratchCanvas.addEventListener('mousemove', scratchCard);
 
-    canvas.addEventListener('touchstart', (e) => { isScratching = true; scratch(e); });
-    canvas.addEventListener('touchend', () => isScratching = false);
-    canvas.addEventListener('touchmove', (e) => { scratch(e); e.preventDefault(); });
+    scratchCanvas.addEventListener('touchstart', (e) => { scratching = true; scratchCard(e); });
+    scratchCanvas.addEventListener('touchend', () => scratching = false);
+    scratchCanvas.addEventListener('touchmove', (e) => { scratchCard(e); e.preventDefault(); });
 
-    // 4. WhatsApp RSVP Handling
-    function sendWhatsAppRSVP(e) {
+    // 4. WhatsApp RSVP Link
+    function handleWhatsAppRSVP(e) {
       e.preventDefault();
-      const phone = "923107959373";
+      const number = "923107959373";
       const name = document.getElementById('rsvp_name').value;
-      const guests = document.getElementById('rsvp_count').value;
+      const count = document.getElementById('rsvp_count').value;
       const events = document.getElementById('rsvp_events').value;
 
-      const msg = `Assalam-o-Alaikum!%0A%0A*Wedding Confirmation*%0A*Guest Name:* ${encodeURIComponent(name)}%0A*Guests Count:* ${encodeURIComponent(guests)}%0A*Events Attending:* ${encodeURIComponent(events)}%0A%0AInsha'Allah hum zaroor shareek honge!`;
-      window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
+      const txt = `Assalam-o-Alaikum!%0A%0A*Wedding Confirmation*%0A*Guest Name:* ${encodeURIComponent(name)}%0A*Guests Count:* ${encodeURIComponent(count)}%0A*Events Attending:* ${encodeURIComponent(events)}%0A%0AInsha'Allah hum zaroor shareek honge!`;
+      window.open(`https://wa.me/${number}?text=${txt}`, '_blank');
     }
   </script>
 </body>
