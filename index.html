@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>The Royal Wedding | Muhammad Sadiq & Arooj Saher</title>
+  
+  <!-- Google Fonts & Font Awesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@500;600;700;800&family=Montserrat:wght@300;400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      --blush-bg: #f9f2f2;
+      --envelope-pink: #d99ca8;
+      --envelope-dark: #b67482;
+      --card-white: #ffffff;
+      --maroon: #81132a;
+      --gold: #d4af37;
+      --gold-dark: #9e7b16;
+      --text-main: #3d2b2f;
+      --text-muted: #7d6569;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: radial-gradient(circle at center, #2e1a22 0%, #15090d 100%);
+      font-family: 'Montserrat', sans-serif;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+    }
+
+    .app-screen {
+      width: 100%;
+      max-width: 440px;
+      min-height: 100vh;
+      background: var(--blush-bg);
+      position: relative;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+      overflow-x: hidden;
+    }
+
+    /* Floating Music Toggle */
+    .music-btn {
+      position: fixed;
+      top: 18px;
+      right: calc(50% - 200px);
+      z-index: 90;
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(217, 156, 168, 0.6);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--maroon);
+      font-size: 15px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      backdrop-filter: blur(6px);
+      transition: all 0.3s ease;
+    }
+
+    @media (max-width: 450px) {
+      .music-btn { right: 18px; }
+    }
+
+    .music-btn.playing {
+      animation: rotateDisc 5s linear infinite;
+    }
+
+    @keyframes rotateDisc {
+      100% { transform: rotate(360deg); }
+    }
+
+    /* =====================================
+       3D REALISTIC ENVELOPE OPENING OVERLAY
+       ===================================== */
+    #envelope-screen {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 440px;
+      height: 100%;
+      background: #f4e8e8;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      transition: opacity 0.8s ease 0.6s, visibility 0.8s ease 0.6s;
+    }
+
+    #envelope-screen.opened {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .envelope-container {
+      position: relative;
+      width: 320px;
+      height: 240px;
+      background: var(--envelope-pink);
+      border-radius: 12px;
+      box-shadow: 0 25px 45px rgba(0,0,0,0.22);
+      perspective: 1000px;
+    }
+
+    /* Floral pattern texture */
+    .envelope-container::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(#ffffff 10%, transparent 11%);
+      background-size: 12px 12px;
+      opacity: 0.25;
+      border-radius: 12px;
+    }
+
+    /* Flap */
+    .envelope-flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 160px solid transparent;
+      border-right: 160px solid transparent;
+      border-top: 130px solid var(--envelope-dark);
+      transform-origin: top;
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 5;
+    }
+
+    #envelope-screen.unseal .envelope-flap {
+      transform: rotateX(180deg);
+      z-index: 1;
+    }
+
+    /* Inside Invitation Card Sliding Out */
+    .sliding-card {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      width: 290px;
+      height: 210px;
+      background: #ffffff;
+      border-radius: 8px;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s;
+      z-index: 2;
+    }
+
+    #envelope-screen.unseal .sliding-card {
+      transform: translateY(-90px) scale(1.04);
+    }
+
+    /* Envelope Bottom Pocket */
+    .envelope-pocket {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 160px solid var(--envelope-pink);
+      border-right: 160px solid var(--envelope-pink);
+      border-bottom: 125px solid var(--envelope-dark);
+      border-radius: 0 0 12px 12px;
+      z-index: 4;
+      pointer-events: none;
+    }
+
+    /* Golden Wax Seal */
+    .wax-seal {
+      position: absolute;
+      top: 100px;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 82px;
+      height: 82px;
+      background: radial-gradient(circle at 30% 30%, #ffe994, #c99324 60%, #855b0a 100%);
+      border-radius: 50%;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.35), inset 0 2px 4px rgba(255,255,255,0.6);
+      z-index: 10;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 2px dashed rgba(255, 255, 255, 0.4);
+      animation: pulseGlow 2.2s infinite ease-in-out;
+      transition: transform 0.4s ease, opacity 0.4s ease;
+    }
+
+    #envelope-screen.unseal .wax-seal {
+      transform: translate(-50%, -50%) scale(0.6);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 6px 18px rgba(0,0,0,0.35); }
+      50% { transform: translate(-50%, -50%) scale(1.06); box-shadow: 0 10px 25px rgba(201, 147, 36, 0.6); }
+    }
+
+    .seal-text-top {
+      font-size: 8px;
+      letter-spacing: 1.5px;
+      color: #5c3e03;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .seal-monogram {
+      font-family: 'Cinzel', serif;
+      font-size: 20px;
+      font-weight: 800;
+      color: #4b3200;
+    }
+
+    .envelope-instruction {
+      margin-top: 35px;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-align: center;
+      font-weight: 600;
+    }
+
+    /* =====================================
+       MAIN INVITATION CARD (TikTok STYLE)
+       ===================================== */
+    .invitation-body {
+      padding: 30px 18px 70px 18px;
+    }
+
+    /* Hero Portrait Arch */
+    .hero-arch-card {
+      background: linear-gradient(180deg, #1f0b14 0%, #3e1223 100%);
+      border-radius: 200px 200px 22px 22px;
+      padding: 40px 20px 35px 20px;
+      color: #ffffff;
+      text-align: center;
+      box-shadow: 0 15px 35px rgba(62, 18, 35, 0.25);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      position: relative;
+      margin-bottom: 30px;
+    }
+
+    .bismillah {
+      font-family: 'Noto Nastaliq Urdu', serif;
+      font-size: 20px;
+      color: var(--gold);
+      line-height: 2.2;
+    }
+
+    .ayah {
+      font-size: 11px;
+      font-style: italic;
+      color: #edd1d7;
+      margin-bottom: 22px;
+    }
+
+    .nana-badge {
+      display: inline-block;
+      border: 1px dashed rgba(212, 175, 55, 0.5);
+      padding: 6px 16px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      margin-bottom: 18px;
+    }
+
+    .nana-badge small {
+      font-size: 9.5px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #fce7b0;
+      display: block;
+    }
+
+    .nana-badge span {
+      font-family: 'Cinzel', serif;
+      font-size: 15px;
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .parents-intro {
+      font-size: 11.5px;
+      letter-spacing: 1px;
+      color: #f1dde2;
+      line-height: 1.5;
+    }
+
+    .parents-name {
+      font-family: 'Cinzel', serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--gold);
+      margin: 6px 0 16px 0;
+    }
+
+    .couple-display {
+      margin: 18px 0;
+    }
+
+    .c-name {
+      font-family: 'Alex Brush', cursive;
+      font-size: 44px;
+      color: #ffffff;
+      line-height: 1.1;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+
+    .c-symbol {
+      font-family: 'Cinzel', serif;
+      font-size: 18px;
+      color: var(--gold);
+      margin: 4px 0;
+    }
+
+    /* =====================================
+       SCRATCH TO REVEAL CARD (VIDEO FEATURE)
+       ===================================== */
+    .scratch-section {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 26px 18px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      margin-bottom: 30px;
+      border: 1px solid rgba(217, 156, 168, 0.4);
+    }
+
+    .scratch-title {
+      font-family: 'Cinzel', serif;
+      font-size: 15px;
+      letter-spacing: 2.5px;
+      color: var(--maroon);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .scratch-subtitle {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .scratch-box {
+      position: relative;
+      width: 220px;
+      height: 190px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Secret Revealed Layer */
+    .revealed-content {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #fff8f9;
+      border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+      border: 2px solid var(--envelope-pink);
+      padding: 15px;
+    }
+
+    .revealed-content i {
+      color: var(--maroon);
+      font-size: 20px;
+      margin-bottom: 6px;
+    }
+
+    .revealed-content h4 {
+      font-family: 'Cinzel', serif;
+      font-size: 15px;
+      color: var(--maroon);
+    }
+
+    .revealed-content p {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    /* Scratch Canvas Overlay */
+    #scratchCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 220px;
+      height: 190px;
+      z-index: 5;
+      cursor: crosshair;
+      touch-action: none;
+    }
+
+    /* =====================================
+       COUNTDOWN TIMER (CLEAN PINK TONE)
+       ===================================== */
+    .timer-wrap {
+      margin: 25px 0 35px 0;
+      text-align: center;
+    }
+
+    .timer-header {
+      font-family: 'Cinzel', serif;
+      font-size: 13px;
+      letter-spacing: 2.5px;
+      color: var(--maroon);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .timer-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .timer-card {
+      background: #ffffff;
+      border: 1px solid rgba(217, 156, 168, 0.5);
+      border-radius: 12px;
+      padding: 12px 4px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    }
+
+    .timer-val {
+      font-family: 'Cinzel', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--maroon);
+    }
+
+    .timer-lbl {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* =====================================
+       TIMELINE EVENTS (MEHNDI, BARAT, WALIMA)
+       ===================================== */
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: 16px;
+      letter-spacing: 2.5px;
+      color: var(--maroon);
+      text-align: center;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .event-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 18px;
+      border: 1px solid rgba(217, 156, 168, 0.4);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+      position: relative;
+    }
+
+    .event-card.featured {
+      border-left: 5px solid var(--maroon);
+    }
+
+    .event-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .event-name {
+      font-family: 'Cinzel', serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--maroon);
+    }
+
+    .event-chip {
+      background: #fcf1f3;
+      color: var(--maroon);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 15px;
+      border: 1px solid rgba(217, 156, 168, 0.4);
+    }
+
+    .event-detail {
+      display: flex;
+      gap: 10px;
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    .event-detail i {
+      color: var(--maroon);
+      margin-top: 3px;
+    }
+
+    .direction-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--maroon);
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 12px;
+      border-radius: 10px;
+      margin-top: 14px;
+      box-shadow: 0 4px 12px rgba(129, 19, 42, 0.25);
+    }
+
+    /* RSVP Form */
+    .rsvp-box {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 24px 18px;
+      border: 1px solid rgba(217, 156, 168, 0.5);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.04);
+      margin-top: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #e5d2d5;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 13.5px;
+      color: var(--text-main);
+      outline: none;
+      background: #fdfbfb;
+    }
+
+    .whatsapp-submit {
+      width: 100%;
+      background: #25D366;
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(37, 211, 102, 0.3);
+      margin-top: 10px;
+    }
+
+    /* Footer Regards */
+    .footer-regards {
+      text-align: center;
+      margin-top: 35px;
+      padding-top: 25px;
+      border-top: 1px dashed rgba(217, 156, 168, 0.6);
+    }
+
+    .footer-regards h6 {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--maroon);
+      margin-bottom: 6px;
+    }
+
+    .footer-regards p {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-main);
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Audio Button -->
+  <button class="music-btn" id="audioToggle" onclick="toggleAudio()">
+    <i class="fa-solid fa-music"></i>
+  </button>
+  <audio id="weddingMusic" loop preload="auto">
+    <source src="music.mp3" type="audio/mp3">
+    <!-- Online Fallback -->
+    <source src="https://assets.mixkit.co/music/preview/mixkit-indian-traditional-instrumental-501.mp3" type="audio/mp3">
+  </audio>
+
+  <div class="app-screen">
+
+    <!-- 1. ENVELOPE OPENING OVERLAY (VIDEO STYLE) -->
+    <div id="envelope-screen">
+      <div class="envelope-container">
+        <div class="envelope-flap"></div>
+        <div class="sliding-card">
+          <span style="font-family:'Alex Brush', cursive; font-size: 26px; color: var(--maroon);">The Wedding Of</span>
+          <h3 style="font-family:'Cinzel', serif; font-size: 15px; color: #333; margin-top: 4px;">Muhammad Sadiq</h3>
+          <span style="font-size: 12px; color: var(--gold);">&</span>
+          <h3 style="font-family:'Cinzel', serif; font-size: 15px; color: #333;">Arooj Saher</h3>
+        </div>
+        <div class="envelope-pocket"></div>
+        
+        <!-- Interactive Wax Seal -->
+        <div class="wax-seal" onclick="unsealEnvelope()">
+          <span class="seal-text-top">Tap To</span>
+          <span class="seal-monogram">OPEN</span>
+        </div>
+      </div>
+      <div class="envelope-instruction">
+        <i class="fa-regular fa-envelope"></i> Tap the golden seal to open
+      </div>
+    </div>
+
+    <!-- 2. MAIN SCROLLABLE INVITATION -->
+    <div class="invitation-body">
+      
+      <!-- Royal Arch Top Card -->
+      <div class="hero-arch-card">
+        <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+        <div class="ayah">"And We created you in pairs" (Surah An-Naba: 8)</div>
+
+        <div class="nana-badge">
+          <small>Under the affectionate prayers of</small>
+          <span>Sher Ali (Grandfather)</span>
+        </div>
+
+        <div class="parents-intro">With the divine blessings of Almighty Allah</div>
+        <div class="parents-name">Mr. & Mrs. Arshad Ali</div>
+        <div class="parents-intro">cordially invite you to celebrate the wedding celebrations of their beloved son</div>
+
+        <div class="couple-display">
+          <div class="c-name">Muhammad Sadiq</div>
+          <div class="c-symbol">&</div>
+          <div class="c-name">Arooj Saher</div>
+        </div>
+      </div>
+
+      <!-- Scratch to Reveal Card (Exact TikTok Video Feature) -->
+      <div class="scratch-section">
+        <div class="scratch-title">Scratch to Reveal Date</div>
+        <div class="scratch-subtitle">Ungli ya mouse se dil ko scratch karein</div>
+        
+        <div class="scratch-box">
+          <div class="revealed-content">
+            <i class="fa-solid fa-heart"></i>
+            <h4>Save The Dates</h4>
+            <p>24, 25 & 26 Nov 2026</p>
+            <p style="font-size: 10px; color: var(--maroon); margin-top: 4px;">Insha'Allah</p>
+          </div>
+          <canvas id="scratchCanvas"></canvas>
+        </div>
+      </div>
+
+      <!-- Live Countdown -->
+      <div class="timer-wrap">
+        <div class="timer-header">Celebration Begins In</div>
+        <div class="timer-row">
+          <div class="timer-card">
+            <div class="timer-val" id="d_val">00</div>
+            <div class="timer-lbl">Days</div>
+          </div>
+          <div class="timer-card">
+            <div class="timer-val" id="h_val">00</div>
+            <div class="timer-lbl">Hours</div>
+          </div>
+          <div class="timer-card">
+            <div class="timer-val" id="m_val">00</div>
+            <div class="timer-lbl">Mins</div>
+          </div>
+          <div class="timer-card">
+            <div class="timer-val" id="s_val">00</div>
+            <div class="timer-lbl">Secs</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Event Timeline -->
+      <div class="section-title">Program Timeline</div>
+
+      <!-- Mehndi -->
+      <div class="event-card">
+        <div class="event-top">
+          <span class="event-name">Mehndi Night</span>
+          <span class="event-chip">24 Nov 2026</span>
+        </div>
+        <div class="event-detail">
+          <i class="fa-regular fa-clock"></i>
+          <span>08:00 PM Onwards</span>
+        </div>
+        <div class="event-detail">
+          <i class="fa-solid fa-location-dot"></i>
+          <span>MS SEO Agency, Faisalabad</span>
+        </div>
+        <a class="direction-btn" href="https://maps.app.goo.gl/pQsDfjx8cx64wBdz7" target="_blank">
+          <i class="fa-solid fa-diamond-turn-right"></i> View Location on Google Maps
+        </a>
+      </div>
+
+      <!-- Barat -->
+      <div class="event-card featured">
+        <div class="event-top">
+          <span class="event-name">Barat Ceremony</span>
+          <span class="event-chip">25 Nov 2026</span>
+        </div>
+        <div class="event-detail">
+          <i class="fa-regular fa-clock"></i>
+          <span>06:00 PM to 10:00 PM</span>
+        </div>
+        <div class="event-detail">
+          <i class="fa-solid fa-location-dot"></i>
+          <span>Taj Mahal Marquee, Near GO Petrol Pump, Samundri Road, Faisalabad</span>
+        </div>
+        <a class="direction-btn" href="https://maps.google.com/?q=Taj+Mahal+Marquee+Samundri+Road+Faisalabad" target="_blank">
+          <i class="fa-solid fa-diamond-turn-right"></i> View Location on Google Maps
+        </a>
+      </div>
+
+      <!-- Walima -->
+      <div class="event-card featured">
+        <div class="event-top">
+          <span class="event-name">Walima Reception</span>
+          <span class="event-chip">26 Nov 2026</span>
+        </div>
+        <div class="event-detail">
+          <i class="fa-regular fa-clock"></i>
+          <span>06:00 PM to 10:00 PM</span>
+        </div>
+        <div class="event-detail">
+          <i class="fa-solid fa-location-dot"></i>
+          <span>Taj Mahal Marquee, Near GO Petrol Pump, Samundri Road, Faisalabad</span>
+        </div>
+        <a class="direction-btn" href="https://maps.google.com/?q=Taj+Mahal+Marquee+Samundri+Road+Faisalabad" target="_blank">
+          <i class="fa-solid fa-diamond-turn-right"></i> View Location on Google Maps
+        </a>
+      </div>
+
+      <!-- RSVP Form -->
+      <div class="rsvp-box">
+        <div class="section-title" style="margin-bottom: 14px;">RSVP Confirmation</div>
+        <form onsubmit="sendWhatsAppRSVP(event)">
+          <div class="form-group">
+            <label>Your Full Name</label>
+            <input type="text" id="rsvp_name" placeholder="Tariq Mehmood" required>
+          </div>
+          <div class="form-group">
+            <label>Attending Guests</label>
+            <select id="rsvp_count">
+              <option value="1 Person">1 Person</option>
+              <option value="2 Persons" selected>2 Persons</option>
+              <option value="3 Persons">3 Persons</option>
+              <option value="Family Members">With Family</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Events Attending</label>
+            <select id="rsvp_events">
+              <option value="All Functions (Mehndi, Barat, Walima)">All Functions (Mehndi, Barat, Walima)</option>
+              <option value="Barat & Walima">Barat & Walima</option>
+              <option value="Walima Reception Only">Walima Reception Only</option>
+            </select>
+          </div>
+          <button type="submit" class="whatsapp-submit">
+            <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i> Confirm via WhatsApp
+          </button>
+        </form>
+      </div>
+
+      <!-- Family Close -->
+      <div class="footer-regards">
+        <h6>Awaiting Your Warm Presence</h6>
+        <p>
+          Aqib Ali & Mrs. Aqib<br>
+          Muhammad Usman<br>
+          & Entire Family
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // 1. Envelope Unseal Animation + Sound Play
+    const audio = document.getElementById('weddingMusic');
+    const audioBtn = document.getElementById('audioToggle');
+    let isPlaying = false;
+
+    function unsealEnvelope() {
+      const screen = document.getElementById('envelope-screen');
+      screen.classList.add('unseal');
+      
+      // Auto play audio upon opening
+      audio.play().then(() => {
+        isPlaying = true;
+        audioBtn.classList.add('playing');
+      }).catch(e => console.log("Audio awaiting user interaction:", e));
+
+      setTimeout(() => {
+        screen.classList.add('opened');
+      }, 1400);
+    }
+
+    function toggleAudio() {
+      if (isPlaying) {
+        audio.pause();
+        audioBtn.classList.remove('playing');
+        isPlaying = false;
+      } else {
+        audio.play().then(() => {
+          audioBtn.classList.add('playing');
+          isPlaying = true;
+        }).catch(e => console.log(e));
+      }
+    }
+
+    // 2. Countdown Logic
+    const mehndiDate = new Date("November 24, 2026 20:00:00").getTime();
+    setInterval(function() {
+      const now = new Date().getTime();
+      const diff = mehndiDate - now;
+
+      if (diff > 0) {
+        document.getElementById("d_val").innerText = Math.floor(diff / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+        document.getElementById("h_val").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+        document.getElementById("m_val").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+        document.getElementById("s_val").innerText = Math.floor((diff % (1000 * 60)) / 1000).toString().padStart(2, '0');
+      }
+    }, 1000);
+
+    // 3. Scratch to Reveal Canvas Setup (Dusty Pink Heart Glitter)
+    const canvas = document.getElementById('scratchCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = 220;
+    canvas.height = 190;
+
+    function initScratch() {
+      ctx.fillStyle = '#d99ca8'; // Dusky Pink coating
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Heart shaped mask / sparkles overlay
+      ctx.fillStyle = '#b67482';
+      ctx.font = 'bold 13px Montserrat';
+      ctx.textAlign = 'center';
+      ctx.fillText('SCRATCH HERE ❤', 110, 100);
+    }
+    initScratch();
+
+    let isScratching = false;
+    let scratchedPixels = 0;
+    let celebrated = false;
+
+    function scratch(e) {
+      if (!isScratching) return;
+      const rect = canvas.getBoundingClientRect();
+      const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
+      const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
+
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.beginPath();
+      ctx.arc(x, y, 18, 0, Math.PI * 2);
+      ctx.fill();
+
+      scratchedPixels++;
+      if (scratchedPixels > 45 && !celebrated) {
+        celebrated = true;
+        confetti({
+          particleCount: 60,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+      }
+    }
+
+    canvas.addEventListener('mousedown', () => isScratching = true);
+    canvas.addEventListener('mouseup', () => isScratching = false);
+    canvas.addEventListener('mousemove', scratch);
+
+    canvas.addEventListener('touchstart', (e) => { isScratching = true; scratch(e); });
+    canvas.addEventListener('touchend', () => isScratching = false);
+    canvas.addEventListener('touchmove', (e) => { scratch(e); e.preventDefault(); });
+
+    // 4. WhatsApp RSVP Handling
+    function sendWhatsAppRSVP(e) {
+      e.preventDefault();
+      const phone = "923107959373";
+      const name = document.getElementById('rsvp_name').value;
+      const guests = document.getElementById('rsvp_count').value;
+      const events = document.getElementById('rsvp_events').value;
+
+      const msg = `Assalam-o-Alaikum!%0A%0A*Wedding Confirmation*%0A*Guest Name:* ${encodeURIComponent(name)}%0A*Guests Count:* ${encodeURIComponent(guests)}%0A*Events Attending:* ${encodeURIComponent(events)}%0A%0AInsha'Allah hum zaroor shareek honge!`;
+      window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
+    }
+  </script>
+</body>
+</html>
