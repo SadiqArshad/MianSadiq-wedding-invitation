@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>The Royal Wedding | Muhammad Sadiq & Arooj Saher</title>
   
-  <!-- Fonts Matching the Video -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
@@ -19,7 +18,6 @@
       --video-flap: #be828f;
       --video-dark-pink: #914656;
       --video-deep-burgundy: #6c1a2d;
-      --video-soft-white: #ffffff;
       --video-card-bg: #faf5f6;
       --text-heading: #3c242a;
       --text-body: #6f585d;
@@ -44,7 +42,6 @@
       overflow-x: hidden;
     }
 
-    /* Main Container Screen */
     .app-screen {
       width: 100%;
       max-width: 440px;
@@ -55,7 +52,6 @@
       overflow-x: hidden;
     }
 
-    /* Top Floating Music Icon (Like 00:05 in video) */
     .audio-btn {
       position: fixed;
       top: 18px;
@@ -89,9 +85,7 @@
       100% { transform: rotate(360deg); }
     }
 
-    /* ========================================================
-       1. ENVELOPE FULLSCREEN OVERLAY (DITO VIDEO 00:00 - 00:04)
-       ======================================================== */
+    /* Envelope Splash Screen */
     #envelope-screen {
       position: fixed;
       top: 0;
@@ -126,7 +120,6 @@
       perspective: 1000px;
     }
 
-    /* Top Flap */
     .envelope-flap-top {
       position: absolute;
       top: 0;
@@ -146,7 +139,6 @@
       z-index: 1;
     }
 
-    /* Envelope Bottom Pocket */
     .envelope-pocket-bottom {
       position: absolute;
       bottom: 0;
@@ -161,7 +153,6 @@
       pointer-events: none;
     }
 
-    /* Golden 3D Wax Seal with Realistic Texture */
     .wax-seal-ring {
       position: absolute;
       top: 102px;
@@ -218,7 +209,6 @@
       font-weight: 700;
     }
 
-    /* Flash Light Flare Effect */
     .flash-burst {
       position: absolute;
       top: 50%;
@@ -239,9 +229,7 @@
       opacity: 1;
     }
 
-    /* ========================================================
-       2. CINEMATIC HERO ARCH SECTION (DITO VIDEO 00:05 - 00:09)
-       ======================================================== */
+    /* Hero Arch */
     .hero-arch-section {
       position: relative;
       width: 100%;
@@ -258,7 +246,6 @@
       border-bottom: 1px solid rgba(216, 176, 86, 0.3);
     }
 
-    /* Glass Arch Portal (Exact Video Arch Style) */
     .arch-portal-glass {
       width: 100%;
       border-radius: 220px 220px 24px 24px;
@@ -342,7 +329,6 @@
       margin: 4px 0;
     }
 
-    /* Bouncing Scroll Down Prompt (Dito Video 00:08) */
     .scroll-indicator {
       margin-top: 35px;
       display: flex;
@@ -362,13 +348,11 @@
       60% { transform: translateY(3px); }
     }
 
-    /* ========================================================
-       3. SCRATCH TO REVEAL COMPONENT (DITO VIDEO 00:10 - 00:13)
-       ======================================================== */
     .content-body {
       padding: 30px 18px 80px 18px;
     }
 
+    /* Scratch Card */
     .scratch-wrapper-card {
       background: #ffffff;
       border-radius: 22px;
@@ -450,9 +434,7 @@
       touch-action: none;
     }
 
-    /* ========================================================
-       4. COUNTDOWN TIMER (DITO VIDEO 00:14 - 00:16)
-       ======================================================== */
+    /* Countdown */
     .timer-wrap-card {
       margin: 25px 0 35px 0;
       text-align: center;
@@ -498,9 +480,7 @@
       font-weight: 600;
     }
 
-    /* ========================================================
-       5. PROGRAM TIMELINE (DITO VIDEO 00:16 - 00:20)
-       ======================================================== */
+    /* Timeline */
     .timeline-heading {
       font-family: 'Cormorant Garamond', serif;
       font-size: 18px;
@@ -584,9 +564,7 @@
       box-shadow: 0 4px 12px rgba(108, 26, 45, 0.25);
     }
 
-    /* ========================================================
-       6. RSVP FORM (DITO VIDEO 00:21 - 00:23 "Send a Message")
-       ======================================================== */
+    /* RSVP */
     .rsvp-form-card {
       background: #ffffff;
       border-radius: 20px;
@@ -640,7 +618,6 @@
       margin-top: 10px;
     }
 
-    /* Family Close */
     .family-signature-box {
       text-align: center;
       margin-top: 35px;
@@ -666,7 +643,6 @@
 </head>
 <body>
 
-  <!-- Floating Audio Disc (Like Video 00:05) -->
   <button class="audio-btn" id="audioToggleBtn" onclick="toggleWeddingAudio()">
     <i class="fa-solid fa-music"></i>
   </button>
@@ -677,13 +653,11 @@
 
   <div class="app-screen">
 
-    <!-- 1. FULLSCREEN 3D ENVELOPE (DITO VIDEO 00:00 - 00:04) -->
     <div id="envelope-screen">
       <div class="envelope-model">
         <div class="envelope-flap-top"></div>
         <div class="envelope-pocket-bottom"></div>
 
-        <!-- Golden 3D Wax Seal -->
         <div class="wax-seal-ring" onclick="handleWaxSealOpen()">
           <span class="seal-txt-top">Tap To</span>
           <span class="seal-txt-main">OPEN</span>
@@ -696,7 +670,6 @@
       </div>
     </div>
 
-    <!-- 2. CINEMATIC HERO ARCH SECTION (DITO VIDEO 00:05 - 00:09) -->
     <div class="hero-arch-section">
       <div class="arch-portal-glass">
         <div class="bismillah-top">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
@@ -724,10 +697,8 @@
       </div>
     </div>
 
-    <!-- 3. SCROLLABLE REST OF CARD -->
     <div class="content-body">
 
-      <!-- Scratch to Reveal Date (DITO VIDEO 00:10 - 00:13) -->
       <div class="scratch-wrapper-card">
         <div class="scratch-headline">Scratch to Reveal Date</div>
         <div class="scratch-instruction">Ungli ya mouse se dil ko scratch karein</div>
@@ -743,7 +714,6 @@
         </div>
       </div>
 
-      <!-- Live Countdown (DITO VIDEO 00:14 - 00:16) -->
       <div class="timer-wrap-card">
         <div class="timer-title-text">Celebrations Begin In</div>
         <div class="timer-tiles-row">
@@ -766,10 +736,8 @@
         </div>
       </div>
 
-      <!-- Program Timeline (DITO VIDEO 00:16 - 00:20) -->
       <div class="timeline-heading">Program Timeline</div>
 
-      <!-- Mehndi -->
       <div class="timeline-event-card">
         <div class="event-header-row">
           <span class="event-title-main">Mehndi Night</span>
@@ -788,7 +756,6 @@
         </a>
       </div>
 
-      <!-- Barat -->
       <div class="timeline-event-card featured-barat">
         <div class="event-header-row">
           <span class="event-title-main">Barat Ceremony</span>
@@ -807,7 +774,6 @@
         </a>
       </div>
 
-      <!-- Walima -->
       <div class="timeline-event-card featured-walima">
         <div class="event-header-row">
           <span class="event-title-main">Walima Reception</span>
@@ -826,7 +792,6 @@
         </a>
       </div>
 
-      <!-- RSVP Form (DITO VIDEO 00:21 - 00:23) -->
       <div class="rsvp-form-card">
         <div class="timeline-heading" style="margin-bottom: 14px;">Confirm Your Presence</div>
         <form onsubmit="handleWhatsAppRSVP(event)">
@@ -857,7 +822,6 @@
         </form>
       </div>
 
-      <!-- Family Close -->
       <div class="family-signature-box">
         <h6>Awaiting Your Warm Presence</h6>
         <p>
@@ -871,7 +835,6 @@
   </div>
 
   <script>
-    // 1. Envelope Opening Sequence (Dito Video)
     const weddingTrack = document.getElementById('weddingTrack');
     const audioBtn = document.getElementById('audioToggleBtn');
     let isPlaying = false;
@@ -880,20 +843,17 @@
       const envelopeScreen = document.getElementById('envelope-screen');
       envelopeScreen.classList.add('unseal');
 
-      // Music trigger
       weddingTrack.play().then(() => {
         isPlaying = true;
         audioBtn.classList.add('playing');
       }).catch(e => console.log(e));
 
-      // Golden sparkle burst
       confetti({
         particleCount: 75,
         spread: 80,
         origin: { y: 0.5 }
       });
 
-      // Dismiss envelope to reveal Hero Arch
       setTimeout(() => {
         envelopeScreen.classList.add('opened');
       }, 1200);
@@ -912,7 +872,6 @@
       }
     }
 
-    // 2. Countdown Timer
     const targetDate = new Date("November 24, 2026 20:00:00").getTime();
     setInterval(function() {
       const now = new Date().getTime();
@@ -926,7 +885,6 @@
       }
     }, 1000);
 
-    // 3. Scratch Canvas (Dito Video Glitter Heart)
     const canvas = document.getElementById('scratchCanvas');
     const ctx = canvas.getContext('2d');
     canvas.width = 220;
@@ -977,7 +935,6 @@
     canvas.addEventListener('touchend', () => scratching = false);
     canvas.addEventListener('touchmove', (e) => { doScratch(e); e.preventDefault(); });
 
-    // 4. WhatsApp RSVP Handling
     function handleWhatsAppRSVP(e) {
       e.preventDefault();
       const phone = "923107959373";
