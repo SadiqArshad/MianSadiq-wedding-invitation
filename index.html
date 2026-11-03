@@ -5,25 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>The Royal Wedding | Muhammad Sadiq & Arooj Saher</title>
   
-  <!-- Google Fonts & Libraries -->
+  <!-- Fonts Matching the Video -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@500;600;700;800;900&family=Montserrat:wght@300;400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <style>
     :root {
-      --envelope-pink: #d89aa7;
-      --envelope-fold: #c27f8d;
-      --envelope-dark: #9a5363;
-      --gold-1: #ffeaa7;
-      --gold-2: #d4af37;
-      --gold-3: #997314;
-      --rose-deep: #781c2f;
-      --bg-cream: #faf5f5;
-      --text-brown: #3b2a2e;
-      --text-muted: #786166;
+      --video-pink-bg: #edd6dc;
+      --video-envelope: #d49da8;
+      --video-flap: #be828f;
+      --video-dark-pink: #914656;
+      --video-deep-burgundy: #6c1a2d;
+      --video-soft-white: #ffffff;
+      --video-card-bg: #faf5f6;
+      --text-heading: #3c242a;
+      --text-body: #6f585d;
+      --gold-accent: #d8b056;
     }
 
     * {
@@ -34,9 +34,9 @@
     }
 
     body {
-      background: radial-gradient(circle at center, #260d16 0%, #0c0407 100%);
+      background: #1e0d13;
       font-family: 'Montserrat', sans-serif;
-      color: var(--text-brown);
+      color: var(--text-heading);
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -44,54 +44,54 @@
       overflow-x: hidden;
     }
 
-    /* Mobile Container Frame */
-    .app-viewport {
+    /* Main Container Screen */
+    .app-screen {
       width: 100%;
       max-width: 440px;
       min-height: 100vh;
-      background: var(--bg-cream);
+      background: var(--video-card-bg);
       position: relative;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
       overflow-x: hidden;
     }
 
-    /* Floating Music Disc */
-    .floating-audio-btn {
+    /* Top Floating Music Icon (Like 00:05 in video) */
+    .audio-btn {
       position: fixed;
       top: 18px;
       right: calc(50% - 200px);
-      z-index: 150;
-      width: 42px;
-      height: 42px;
+      z-index: 120;
+      width: 38px;
+      height: 38px;
       background: rgba(255, 255, 255, 0.9);
-      border: 1px solid var(--envelope-pink);
+      border: 1px solid var(--video-envelope);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--rose-deep);
-      font-size: 16px;
+      color: var(--video-deep-burgundy);
+      font-size: 15px;
       cursor: pointer;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.12);
       backdrop-filter: blur(8px);
       transition: all 0.3s ease;
     }
 
     @media (max-width: 450px) {
-      .floating-audio-btn { right: 18px; }
+      .audio-btn { right: 18px; }
     }
 
-    .floating-audio-btn.playing {
-      animation: spinVinyl 6s linear infinite;
+    .audio-btn.playing {
+      animation: spinRecord 6s linear infinite;
     }
 
-    @keyframes spinVinyl {
+    @keyframes spinRecord {
       100% { transform: rotate(360deg); }
     }
 
-    /* =========================================================
-       1. ENVELOPE FULLSCREEN SCREEN (EXACT VIDEO MATCH)
-       ========================================================= */
+    /* ========================================================
+       1. ENVELOPE FULLSCREEN OVERLAY (DITO VIDEO 00:00 - 00:04)
+       ======================================================== */
     #envelope-screen {
       position: fixed;
       top: 0;
@@ -100,81 +100,80 @@
       width: 100%;
       max-width: 440px;
       height: 100vh;
-      background: #ecd4d8 url('https://www.transparenttextures.com/patterns/damask.png');
-      z-index: 120;
+      background: var(--video-pink-bg) url('https://www.transparenttextures.com/patterns/damask.png');
+      z-index: 100;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       padding: 20px;
-      transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1) 1.6s, visibility 0.8s ease 1.6s;
+      transition: opacity 0.8s ease 1.2s, visibility 0.8s ease 1.2s;
     }
 
-    #envelope-screen.dismissed {
+    #envelope-screen.opened {
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
     }
 
-    /* Main Realistic Envelope Body */
-    .envelope-wrapper {
+    .envelope-model {
       position: relative;
-      width: 330px;
-      height: 240px;
-      background: var(--envelope-pink) url('https://www.transparenttextures.com/patterns/damask.png');
+      width: 320px;
+      height: 235px;
+      background: var(--video-envelope) url('https://www.transparenttextures.com/patterns/damask.png');
       border-radius: 12px;
-      box-shadow: 0 25px 60px rgba(0,0,0,0.35);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
       perspective: 1000px;
     }
 
     /* Top Flap */
-    .flap-top {
+    .envelope-flap-top {
       position: absolute;
       top: 0;
       left: 0;
       width: 0;
       height: 0;
-      border-left: 165px solid transparent;
-      border-right: 165px solid transparent;
-      border-top: 135px solid var(--envelope-fold);
+      border-left: 160px solid transparent;
+      border-right: 160px solid transparent;
+      border-top: 130px solid var(--video-flap);
       transform-origin: top;
-      transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
-      z-index: 10;
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 8;
     }
 
-    #envelope-screen.opened .flap-top {
+    #envelope-screen.unseal .envelope-flap-top {
       transform: rotateX(180deg);
       z-index: 1;
     }
 
-    /* Pocket Bottom */
-    .envelope-pocket-layer {
+    /* Envelope Bottom Pocket */
+    .envelope-pocket-bottom {
       position: absolute;
       bottom: 0;
       left: 0;
       width: 0;
       height: 0;
-      border-left: 165px solid var(--envelope-pink);
-      border-right: 165px solid var(--envelope-pink);
-      border-bottom: 130px solid var(--envelope-dark);
+      border-left: 160px solid var(--video-envelope);
+      border-right: 160px solid var(--video-envelope);
+      border-bottom: 125px solid var(--video-dark-pink);
       border-radius: 0 0 12px 12px;
       z-index: 5;
       pointer-events: none;
     }
 
-    /* Golden 3D Wax Seal */
-    .golden-wax-seal {
+    /* Golden 3D Wax Seal with Realistic Texture */
+    .wax-seal-ring {
       position: absolute;
       top: 102px;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 90px;
-      height: 90px;
+      width: 86px;
+      height: 86px;
       background: radial-gradient(circle at 35% 35%, #fff1ba, #d4af37 55%, #7a5a0d 100%);
       border-radius: 50%;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.4), inset 0 2px 6px rgba(255,255,255,0.7);
-      border: 2px dashed rgba(255, 255, 255, 0.4);
-      z-index: 25;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4), inset 0 2px 5px rgba(255,255,255,0.7);
+      border: 2px dashed rgba(255, 255, 255, 0.45);
+      z-index: 20;
       cursor: pointer;
       display: flex;
       flex-direction: column;
@@ -189,123 +188,112 @@
       50% { transform: translate(-50%, -50%) scale(1.06); box-shadow: 0 14px 35px rgba(212, 175, 55, 0.6); }
     }
 
-    #envelope-screen.opened .golden-wax-seal {
-      transform: translate(-50%, -50%) scale(0.1);
+    #envelope-screen.unseal .wax-seal-ring {
+      transform: translate(-50%, -50%) scale(0.2);
       opacity: 0;
       pointer-events: none;
     }
 
-    .seal-tap-label {
+    .seal-txt-top {
       font-size: 8px;
       font-weight: 700;
       letter-spacing: 1.5px;
       text-transform: uppercase;
-      color: #4a3402;
+      color: #442a03;
     }
 
-    .seal-open-label {
-      font-family: 'Cinzel', serif;
-      font-size: 17px;
-      font-weight: 800;
+    .seal-txt-main {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 19px;
+      font-weight: 700;
       color: #3b2700;
     }
 
-    /* Light Glow Flare on Open */
-    .glow-flare {
+    .envelope-invitation-text {
+      margin-top: 45px;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--video-deep-burgundy);
+      font-weight: 700;
+    }
+
+    /* Flash Light Flare Effect */
+    .flash-burst {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%) scale(0);
-      width: 300px;
-      height: 300px;
-      background: radial-gradient(circle, rgba(255, 240, 180, 0.9) 0%, rgba(255, 215, 0, 0.4) 40%, transparent 70%);
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(255, 250, 220, 1) 0%, rgba(255, 220, 150, 0.6) 40%, transparent 70%);
       border-radius: 50%;
       pointer-events: none;
-      z-index: 20;
-      transition: transform 0.8s ease 0.2s, opacity 0.8s ease 0.4s;
+      z-index: 15;
       opacity: 0;
+      transition: transform 0.7s ease 0.2s, opacity 0.7s ease 0.3s;
     }
 
-    #envelope-screen.opened .glow-flare {
-      transform: translate(-50%, -50%) scale(2.5);
+    #envelope-screen.unseal .flash-burst {
+      transform: translate(-50%, -50%) scale(2.8);
       opacity: 1;
     }
 
-    .bottom-invitation-hint {
-      margin-top: 50px;
-      font-size: 11.5px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--rose-deep);
-      font-weight: 700;
-      transition: opacity 0.3s;
-    }
-
-    #envelope-screen.opened .bottom-invitation-hint {
-      opacity: 0;
-    }
-
-    /* =========================================================
-       2. CINEMATIC HERO ARCH BANNER (EXACT VIDEO MATCH)
-       ========================================================= */
-    .hero-cinematic-stage {
+    /* ========================================================
+       2. CINEMATIC HERO ARCH SECTION (DITO VIDEO 00:05 - 00:09)
+       ======================================================== */
+    .hero-arch-section {
       position: relative;
       width: 100%;
       min-height: 94vh;
-      background: linear-gradient(180deg, rgba(20, 8, 14, 0.4) 0%, rgba(35, 10, 20, 0.85) 100%), 
+      background: linear-gradient(180deg, rgba(16, 7, 11, 0.45) 0%, rgba(35, 12, 20, 0.9) 100%), 
                   url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80') center/cover no-repeat;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 45px 22px 50px 22px;
+      padding: 45px 20px 40px 20px;
       color: #ffffff;
-      border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+      border-bottom: 1px solid rgba(216, 176, 86, 0.3);
     }
 
-    /* Mughal/Gothic Royal Glass Arch */
-    .arch-frame-glass {
+    /* Glass Arch Portal (Exact Video Arch Style) */
+    .arch-portal-glass {
       width: 100%;
-      border-radius: 200px 200px 20px 20px;
-      padding: 45px 18px 35px 18px;
+      border-radius: 220px 220px 24px 24px;
+      padding: 42px 18px 35px 18px;
       background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1.5px solid rgba(255, 225, 150, 0.35);
-      box-shadow: 0 15px 40px rgba(0,0,0,0.5);
-      animation: floatSubtle 4s ease-in-out infinite;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1.5px solid rgba(255, 235, 170, 0.4);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.45);
     }
 
-    @keyframes floatSubtle {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-5px); }
-    }
-
-    .bismillah-text {
+    .bismillah-top {
       font-family: 'Noto Nastaliq Urdu', serif;
       font-size: 21px;
       color: #ffeaa7;
       line-height: 2.2;
     }
 
-    .ayah-text {
+    .ayah-top {
       font-size: 11px;
       font-style: italic;
       color: #edd5da;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
-    .nana-tag {
+    .nana-blessing-chip {
       display: inline-block;
-      border: 1px dashed rgba(255, 225, 150, 0.5);
+      border: 1px dashed rgba(255, 235, 170, 0.5);
       padding: 6px 16px;
       border-radius: 20px;
       background: rgba(0, 0, 0, 0.25);
       margin-bottom: 16px;
     }
 
-    .nana-tag small {
+    .nana-blessing-chip small {
       font-size: 9px;
       letter-spacing: 1.5px;
       text-transform: uppercase;
@@ -313,100 +301,101 @@
       display: block;
     }
 
-    .nana-tag span {
-      font-family: 'Cinzel', serif;
-      font-size: 15px;
+    .nana-blessing-chip span {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
       color: #ffffff;
       font-weight: 700;
     }
 
-    .parents-invite-text {
+    .parents-invite-line {
       font-size: 11.5px;
       letter-spacing: 1px;
       color: #edd9dd;
       line-height: 1.5;
     }
 
-    .parents-bold-name {
-      font-family: 'Cinzel', serif;
-      font-size: 18px;
+    .parents-bold-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 19px;
       font-weight: 700;
       color: #ffeaa7;
-      margin: 6px 0 18px 0;
+      margin: 6px 0 16px 0;
     }
 
-    .couple-hero-wrap {
-      margin: 22px 0 10px 0;
+    .couple-hero-names {
+      margin: 18px 0 10px 0;
     }
 
-    .groom-name, .bride-name {
-      font-family: 'Alex Brush', cursive;
+    .hero-name {
+      font-family: 'Great Vibes', cursive;
       font-size: 46px;
       color: #ffffff;
       line-height: 1.1;
       text-shadow: 0 3px 12px rgba(0,0,0,0.7);
     }
 
-    .wedding-and-icon {
-      font-family: 'Cinzel', serif;
+    .hero-and {
+      font-family: 'Cormorant Garamond', serif;
       font-size: 18px;
       color: #ffeaa7;
       margin: 4px 0;
     }
 
-    /* Bouncing Scroll Down Prompt (Exact Video Match) */
-    .scroll-down-hint {
+    /* Bouncing Scroll Down Prompt (Dito Video 00:08) */
+    .scroll-indicator {
       margin-top: 35px;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 6px;
-      font-size: 10px;
+      font-size: 9.5px;
       letter-spacing: 3px;
       text-transform: uppercase;
       color: #ffd885;
-      animation: bounceDown 2s infinite;
+      animation: bounceHint 2s infinite;
     }
 
-    @keyframes bounceDown {
+    @keyframes bounceHint {
       0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-      40% { transform: translateY(8px); }
-      60% { transform: translateY(4px); }
+      40% { transform: translateY(7px); }
+      60% { transform: translateY(3px); }
     }
 
-    /* =========================================================
-       3. SCRATCH TO REVEAL COMPONENT (EXACT VIDEO MATCH)
-       ========================================================= */
+    /* ========================================================
+       3. SCRATCH TO REVEAL COMPONENT (DITO VIDEO 00:10 - 00:13)
+       ======================================================== */
     .content-body {
       padding: 30px 18px 80px 18px;
     }
 
-    .scratch-card-box {
+    .scratch-wrapper-card {
       background: #ffffff;
-      border-radius: 20px;
+      border-radius: 22px;
       padding: 26px 18px;
       text-align: center;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
       margin-bottom: 28px;
-      border: 1px solid rgba(216, 154, 167, 0.45);
+      border: 1px solid rgba(212, 157, 168, 0.4);
     }
 
-    .scratch-header-text {
-      font-family: 'Cinzel', serif;
-      font-size: 16px;
-      letter-spacing: 2.5px;
-      color: var(--rose-deep);
+    .scratch-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      letter-spacing: 2px;
+      color: var(--video-deep-burgundy);
       text-transform: uppercase;
       margin-bottom: 6px;
+      font-weight: 700;
     }
 
-    .scratch-subtitle-text {
+    .scratch-instruction {
       font-size: 11.5px;
-      color: var(--text-muted);
+      color: var(--text-body);
       margin-bottom: 20px;
     }
 
-    .scratch-viewport {
+    .scratch-area {
       position: relative;
       width: 220px;
       height: 190px;
@@ -416,7 +405,7 @@
       justify-content: center;
     }
 
-    .hidden-date-reveal {
+    .revealed-heart-card {
       position: absolute;
       width: 100%;
       height: 100%;
@@ -426,25 +415,26 @@
       justify-content: center;
       background: #fff8f9;
       border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
-      border: 2px solid var(--envelope-pink);
+      border: 2px solid var(--video-envelope);
       padding: 15px;
     }
 
-    .hidden-date-reveal i {
-      color: var(--rose-deep);
+    .revealed-heart-card i {
+      color: var(--video-deep-burgundy);
       font-size: 22px;
       margin-bottom: 6px;
     }
 
-    .hidden-date-reveal h4 {
-      font-family: 'Cinzel', serif;
-      font-size: 16px;
-      color: var(--rose-deep);
+    .revealed-heart-card h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 17px;
+      color: var(--video-deep-burgundy);
+      font-weight: 700;
     }
 
-    .hidden-date-reveal p {
+    .revealed-heart-card p {
       font-size: 12px;
-      color: var(--text-muted);
+      color: var(--text-body);
       font-weight: 600;
       margin-top: 4px;
     }
@@ -460,127 +450,130 @@
       touch-action: none;
     }
 
-    /* =========================================================
-       4. COUNTDOWN TIMER (VIDEO CLEAN TONE)
-       ========================================================= */
-    .countdown-section {
+    /* ========================================================
+       4. COUNTDOWN TIMER (DITO VIDEO 00:14 - 00:16)
+       ======================================================== */
+    .timer-wrap-card {
       margin: 25px 0 35px 0;
       text-align: center;
     }
 
-    .countdown-title {
-      font-family: 'Cinzel', serif;
-      font-size: 13px;
-      letter-spacing: 2.5px;
-      color: var(--rose-deep);
+    .timer-title-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 15px;
+      letter-spacing: 2px;
+      color: var(--video-deep-burgundy);
       text-transform: uppercase;
       margin-bottom: 14px;
+      font-weight: 700;
     }
 
-    .timer-grid-display {
+    .timer-tiles-row {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 8px;
     }
 
-    .timer-card-pill {
+    .timer-single-tile {
       background: #ffffff;
-      border: 1px solid rgba(216, 154, 167, 0.4);
+      border: 1px solid rgba(212, 157, 168, 0.4);
       border-radius: 12px;
       padding: 12px 4px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.03);
     }
 
-    .timer-bold-num {
-      font-family: 'Cinzel', serif;
-      font-size: 20px;
+    .timer-single-tile .num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
       font-weight: 700;
-      color: var(--rose-deep);
+      color: var(--video-deep-burgundy);
     }
 
-    .timer-dim-lbl {
+    .timer-single-tile .label {
       font-size: 9px;
       text-transform: uppercase;
       letter-spacing: 1px;
-      color: var(--text-muted);
+      color: var(--text-body);
       margin-top: 2px;
+      font-weight: 600;
     }
 
-    /* =========================================================
-       5. PROGRAM TIMELINE (MEHNDI, BARAT, WALIMA)
-       ========================================================= */
-    .program-header {
-      font-family: 'Cinzel', serif;
-      font-size: 16px;
+    /* ========================================================
+       5. PROGRAM TIMELINE (DITO VIDEO 00:16 - 00:20)
+       ======================================================== */
+    .timeline-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
       letter-spacing: 2.5px;
-      color: var(--rose-deep);
+      color: var(--video-deep-burgundy);
       text-align: center;
       text-transform: uppercase;
       margin-bottom: 20px;
+      font-weight: 700;
     }
 
-    .event-info-card {
+    .timeline-event-card {
       background: #ffffff;
-      border-radius: 16px;
+      border-radius: 18px;
       padding: 20px;
       margin-bottom: 18px;
-      border: 1px solid rgba(216, 154, 167, 0.35);
+      border: 1px solid rgba(212, 157, 168, 0.35);
       box-shadow: 0 6px 18px rgba(0,0,0,0.03);
       position: relative;
     }
 
-    .event-info-card.featured-barat {
-      border-left: 5px solid var(--rose-deep);
+    .timeline-event-card.featured-barat {
+      border-left: 5px solid var(--video-deep-burgundy);
     }
 
-    .event-info-card.featured-walima {
-      border-left: 5px solid var(--gold-2);
+    .timeline-event-card.featured-walima {
+      border-left: 5px solid var(--gold-accent);
     }
 
-    .event-meta-row {
+    .event-header-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 12px;
     }
 
-    .event-title-text {
-      font-family: 'Cinzel', serif;
-      font-size: 17px;
+    .event-title-main {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 19px;
       font-weight: 700;
-      color: var(--rose-deep);
+      color: var(--video-deep-burgundy);
     }
 
-    .event-badge-pill {
+    .event-pill-date {
       background: #fbf1f3;
-      color: var(--rose-deep);
+      color: var(--video-deep-burgundy);
       font-size: 11px;
       font-weight: 700;
       padding: 4px 10px;
       border-radius: 15px;
-      border: 1px solid rgba(216, 154, 167, 0.4);
+      border: 1px solid rgba(212, 157, 168, 0.4);
     }
 
-    .event-row-detail {
+    .event-info-line {
       display: flex;
       gap: 10px;
       font-size: 12.5px;
-      color: var(--text-muted);
+      color: var(--text-body);
       margin-bottom: 8px;
       line-height: 1.4;
     }
 
-    .event-row-detail i {
-      color: var(--rose-deep);
+    .event-info-line i {
+      color: var(--video-deep-burgundy);
       margin-top: 3px;
     }
 
-    .maps-direction-btn {
+    .google-maps-btn {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      background: var(--rose-deep);
+      background: var(--video-deep-burgundy);
       color: #ffffff;
       text-decoration: none;
       font-size: 12px;
@@ -588,53 +581,48 @@
       padding: 12px;
       border-radius: 10px;
       margin-top: 14px;
-      box-shadow: 0 4px 12px rgba(120, 28, 47, 0.25);
-      transition: transform 0.2s;
+      box-shadow: 0 4px 12px rgba(108, 26, 45, 0.25);
     }
 
-    .maps-direction-btn:active {
-      transform: scale(0.98);
-    }
-
-    /* =========================================================
-       6. RSVP WHATSAPP FORM
-       ========================================================= */
-    .rsvp-card-section {
+    /* ========================================================
+       6. RSVP FORM (DITO VIDEO 00:21 - 00:23 "Send a Message")
+       ======================================================== */
+    .rsvp-form-card {
       background: #ffffff;
-      border-radius: 18px;
+      border-radius: 20px;
       padding: 24px 18px;
-      border: 1px solid rgba(216, 154, 167, 0.45);
+      border: 1px solid rgba(212, 157, 168, 0.45);
       box-shadow: 0 8px 25px rgba(0,0,0,0.04);
       margin-top: 30px;
     }
 
-    .form-item-wrap {
+    .form-field-group {
       margin-bottom: 14px;
     }
 
-    .form-item-wrap label {
+    .form-field-group label {
       display: block;
       font-size: 11px;
       font-weight: 700;
       letter-spacing: 1px;
       text-transform: uppercase;
-      color: var(--text-brown);
+      color: var(--text-heading);
       margin-bottom: 6px;
     }
 
-    .form-item-wrap input, .form-item-wrap select {
+    .form-field-group input, .form-field-group select {
       width: 100%;
       padding: 12px;
       border: 1px solid #e5d2d5;
       border-radius: 10px;
       font-family: inherit;
       font-size: 13.5px;
-      color: var(--text-brown);
+      color: var(--text-heading);
       outline: none;
       background: #fdfbfb;
     }
 
-    .rsvp-whatsapp-btn {
+    .whatsapp-submit-btn {
       width: 100%;
       background: #25D366;
       color: #ffffff;
@@ -652,34 +640,34 @@
       margin-top: 10px;
     }
 
-    /* Footer Regards */
-    .family-signature {
+    /* Family Close */
+    .family-signature-box {
       text-align: center;
       margin-top: 35px;
       padding-top: 25px;
-      border-top: 1px dashed rgba(216, 154, 167, 0.6);
+      border-top: 1px dashed rgba(212, 157, 168, 0.6);
     }
 
-    .family-signature h6 {
+    .family-signature-box h6 {
       font-size: 11px;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: var(--rose-deep);
+      color: var(--video-deep-burgundy);
       margin-bottom: 6px;
     }
 
-    .family-signature p {
+    .family-signature-box p {
       font-size: 13.5px;
       font-weight: 600;
-      color: var(--text-brown);
+      color: var(--text-heading);
       line-height: 1.6;
     }
   </style>
 </head>
 <body>
 
-  <!-- Floating Audio Player Button -->
-  <button class="floating-audio-btn" id="audioToggleBtn" onclick="toggleWeddingMusic()">
+  <!-- Floating Audio Disc (Like Video 00:05) -->
+  <button class="audio-btn" id="audioToggleBtn" onclick="toggleWeddingAudio()">
     <i class="fa-solid fa-music"></i>
   </button>
   <audio id="weddingTrack" loop preload="auto">
@@ -687,167 +675,167 @@
     <source src="https://assets.mixkit.co/music/preview/mixkit-indian-traditional-instrumental-501.mp3" type="audio/mp3">
   </audio>
 
-  <div class="app-viewport">
+  <div class="app-screen">
 
-    <!-- 1. FULLSCREEN 3D ENVELOPE (AS SEEN IN VIDEO 00:00 - 00:04) -->
+    <!-- 1. FULLSCREEN 3D ENVELOPE (DITO VIDEO 00:00 - 00:04) -->
     <div id="envelope-screen">
-      <div class="envelope-wrapper">
-        <div class="flap-top"></div>
-        <div class="envelope-pocket-layer"></div>
+      <div class="envelope-model">
+        <div class="envelope-flap-top"></div>
+        <div class="envelope-pocket-bottom"></div>
 
-        <!-- 3D Wax Seal with Tap Trigger -->
-        <div class="golden-wax-seal" onclick="triggerCinematicOpen()">
-          <span class="seal-tap-label">Tap To</span>
-          <span class="seal-open-label">OPEN</span>
+        <!-- Golden 3D Wax Seal -->
+        <div class="wax-seal-ring" onclick="handleWaxSealOpen()">
+          <span class="seal-txt-top">Tap To</span>
+          <span class="seal-txt-main">OPEN</span>
         </div>
 
-        <div class="glow-flare"></div>
+        <div class="flash-burst"></div>
       </div>
-      <div class="bottom-invitation-hint">
+      <div class="envelope-invitation-text">
         <i class="fa-regular fa-envelope"></i> Tap the golden seal to open
       </div>
     </div>
 
-    <!-- 2. CINEMATIC HERO ARCH SECTION (AS SEEN IN VIDEO 00:05 - 00:09) -->
-    <div class="hero-cinematic-stage">
-      <div class="arch-frame-glass">
-        <div class="bismillah-text">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
-        <div class="ayah-text">"And We created you in pairs" (Surah An-Naba: 8)</div>
+    <!-- 2. CINEMATIC HERO ARCH SECTION (DITO VIDEO 00:05 - 00:09) -->
+    <div class="hero-arch-section">
+      <div class="arch-portal-glass">
+        <div class="bismillah-top">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+        <div class="ayah-top">"And We created you in pairs" (Surah An-Naba: 8)</div>
 
-        <div class="nana-tag">
+        <div class="nana-blessing-chip">
           <small>Under the affectionate blessings of</small>
           <span>Sher Ali (Grandfather)</span>
         </div>
 
-        <div class="parents-invite-text">With the divine blessings of Almighty Allah</div>
-        <div class="parents-bold-name">Mr. & Mrs. Arshad Ali</div>
-        <div class="parents-invite-text">request the honor of your presence to celebrate the wedding ceremony of their beloved son</div>
+        <div class="parents-invite-line">With the divine blessings of Almighty Allah</div>
+        <div class="parents-bold-text">Mr. & Mrs. Arshad Ali</div>
+        <div class="parents-invite-line">request the honor of your presence to celebrate the wedding ceremony of their beloved son</div>
 
-        <div class="couple-hero-wrap">
-          <div class="groom-name">Muhammad Sadiq</div>
-          <div class="wedding-and-icon">&</div>
-          <div class="bride-name">Arooj Saher</div>
+        <div class="couple-hero-names">
+          <div class="hero-name">Muhammad Sadiq</div>
+          <div class="hero-and">&</div>
+          <div class="hero-name">Arooj Saher</div>
         </div>
       </div>
 
-      <div class="scroll-down-hint">
+      <div class="scroll-indicator">
         <span>Scroll</span>
         <i class="fa-solid fa-chevron-down"></i>
       </div>
     </div>
 
-    <!-- 3. SCROLLABLE REST OF THE INVITATION -->
+    <!-- 3. SCROLLABLE REST OF CARD -->
     <div class="content-body">
 
-      <!-- Scratch to Reveal Card (AS SEEN IN VIDEO 00:10 - 00:13) -->
-      <div class="scratch-card-box">
-        <div class="scratch-header-text">Scratch to Reveal Date</div>
-        <div class="scratch-subtitle-text">Ungli ya mouse se dil ko scratch karein</div>
+      <!-- Scratch to Reveal Date (DITO VIDEO 00:10 - 00:13) -->
+      <div class="scratch-wrapper-card">
+        <div class="scratch-headline">Scratch to Reveal Date</div>
+        <div class="scratch-instruction">Ungli ya mouse se dil ko scratch karein</div>
         
-        <div class="scratch-viewport">
-          <div class="hidden-date-reveal">
+        <div class="scratch-area">
+          <div class="revealed-heart-card">
             <i class="fa-solid fa-heart"></i>
             <h4>Save The Dates</h4>
             <p>24, 25 & 26 Nov 2026</p>
-            <p style="font-size: 10.5px; color: var(--rose-deep); margin-top: 4px;">Insha'Allah</p>
+            <p style="font-size: 10.5px; color: var(--video-deep-burgundy); margin-top: 4px;">Insha'Allah</p>
           </div>
           <canvas id="scratchCanvas"></canvas>
         </div>
       </div>
 
-      <!-- Live Countdown (AS SEEN IN VIDEO 00:14 - 00:16) -->
-      <div class="countdown-section">
-        <div class="countdown-title">Celebrations Begin In</div>
-        <div class="timer-grid-display">
-          <div class="timer-card-pill">
-            <div class="timer-bold-num" id="d_val">00</div>
-            <div class="timer-dim-lbl">Days</div>
+      <!-- Live Countdown (DITO VIDEO 00:14 - 00:16) -->
+      <div class="timer-wrap-card">
+        <div class="timer-title-text">Celebrations Begin In</div>
+        <div class="timer-tiles-row">
+          <div class="timer-single-tile">
+            <div class="num" id="d_val">00</div>
+            <div class="label">Days</div>
           </div>
-          <div class="timer-card-pill">
-            <div class="timer-bold-num" id="h_val">00</div>
-            <div class="timer-dim-lbl">Hours</div>
+          <div class="timer-single-tile">
+            <div class="num" id="h_val">00</div>
+            <div class="label">Hours</div>
           </div>
-          <div class="timer-card-pill">
-            <div class="timer-bold-num" id="m_val">00</div>
-            <div class="timer-dim-lbl">Mins</div>
+          <div class="timer-single-tile">
+            <div class="num" id="m_val">00</div>
+            <div class="label">Mins</div>
           </div>
-          <div class="timer-card-pill">
-            <div class="timer-bold-num" id="s_val">00</div>
-            <div class="timer-dim-lbl">Secs</div>
+          <div class="timer-single-tile">
+            <div class="num" id="s_val">00</div>
+            <div class="label">Secs</div>
           </div>
         </div>
       </div>
 
-      <!-- Program Timeline (AS SEEN IN VIDEO 00:16 - 00:20) -->
-      <div class="program-header">Program Timeline</div>
+      <!-- Program Timeline (DITO VIDEO 00:16 - 00:20) -->
+      <div class="timeline-heading">Program Timeline</div>
 
       <!-- Mehndi -->
-      <div class="event-info-card">
-        <div class="event-meta-row">
-          <span class="event-title-text">Mehndi Night</span>
-          <span class="event-badge-pill">24 Nov 2026</span>
+      <div class="timeline-event-card">
+        <div class="event-header-row">
+          <span class="event-title-main">Mehndi Night</span>
+          <span class="event-pill-date">24 Nov 2026</span>
         </div>
-        <div class="event-row-detail">
+        <div class="event-info-line">
           <i class="fa-regular fa-clock"></i>
           <span>08:00 PM Onwards</span>
         </div>
-        <div class="event-row-detail">
+        <div class="event-info-line">
           <i class="fa-solid fa-location-dot"></i>
           <span>MS SEO Agency, Faisalabad</span>
         </div>
-        <a class="maps-direction-btn" href="https://maps.app.goo.gl/pQsDfjx8cx64wBdz7" target="_blank">
+        <a class="google-maps-btn" href="https://maps.app.goo.gl/pQsDfjx8cx64wBdz7" target="_blank">
           <i class="fa-solid fa-diamond-turn-right"></i> View Location on Google Maps
         </a>
       </div>
 
       <!-- Barat -->
-      <div class="event-info-card featured-barat">
-        <div class="event-meta-row">
-          <span class="event-title-text">Barat Ceremony</span>
-          <span class="event-badge-pill">25 Nov 2026</span>
+      <div class="timeline-event-card featured-barat">
+        <div class="event-header-row">
+          <span class="event-title-main">Barat Ceremony</span>
+          <span class="event-pill-date">25 Nov 2026</span>
         </div>
-        <div class="event-row-detail">
+        <div class="event-info-line">
           <i class="fa-regular fa-clock"></i>
           <span>06:00 PM to 10:00 PM</span>
         </div>
-        <div class="event-row-detail">
+        <div class="event-info-line">
           <i class="fa-solid fa-location-dot"></i>
           <span>Taj Mahal Marquee, Near GO Petrol Pump, Samundri Road, Faisalabad</span>
         </div>
-        <a class="maps-direction-btn" href="https://maps.google.com/?q=Taj+Mahal+Marquee+Samundri+Road+Faisalabad" target="_blank">
+        <a class="google-maps-btn" href="https://maps.google.com/?q=Taj+Mahal+Marquee+Samundri+Road+Faisalabad" target="_blank">
           <i class="fa-solid fa-diamond-turn-right"></i> View Location on Google Maps
         </a>
       </div>
 
       <!-- Walima -->
-      <div class="event-info-card featured-walima">
-        <div class="event-meta-row">
-          <span class="event-title-text">Walima Reception</span>
-          <span class="event-badge-pill">26 Nov 2026</span>
+      <div class="timeline-event-card featured-walima">
+        <div class="event-header-row">
+          <span class="event-title-main">Walima Reception</span>
+          <span class="event-pill-date">26 Nov 2026</span>
         </div>
-        <div class="event-row-detail">
+        <div class="event-info-line">
           <i class="fa-regular fa-clock"></i>
           <span>06:00 PM to 10:00 PM</span>
         </div>
-        <div class="event-row-detail">
+        <div class="event-info-line">
           <i class="fa-solid fa-location-dot"></i>
           <span>Taj Mahal Marquee, Near GO Petrol Pump, Samundri Road, Faisalabad</span>
         </div>
-        <a class="maps-direction-btn" href="https://maps.google.com/?q=Taj+Mahal+Marquee+Samundri+Road+Faisalabad" target="_blank">
+        <a class="google-maps-btn" href="https://maps.google.com/?q=Taj+Mahal+Marquee+Samundri+Road+Faisalabad" target="_blank">
           <i class="fa-solid fa-diamond-turn-right"></i> View Location on Google Maps
         </a>
       </div>
 
-      <!-- RSVP Form (AS SEEN IN VIDEO 00:21 - 00:23) -->
-      <div class="rsvp-card-section">
-        <div class="program-header" style="margin-bottom: 14px;">RSVP Confirmation</div>
-        <form onsubmit="sendWhatsAppRSVP(event)">
-          <div class="form-item-wrap">
-            <label>Your Full Name</label>
-            <input type="text" id="rsvp_name" placeholder="Tariq Mehmood" required>
+      <!-- RSVP Form (DITO VIDEO 00:21 - 00:23) -->
+      <div class="rsvp-form-card">
+        <div class="timeline-heading" style="margin-bottom: 14px;">Confirm Your Presence</div>
+        <form onsubmit="handleWhatsAppRSVP(event)">
+          <div class="form-field-group">
+            <label>Your Name</label>
+            <input type="text" id="rsvp_name" placeholder="Your full name" required>
           </div>
-          <div class="form-item-wrap">
-            <label>Attending Guests</label>
+          <div class="form-field-group">
+            <label>Number of Guests</label>
             <select id="rsvp_count">
               <option value="1 Person">1 Person</option>
               <option value="2 Persons" selected>2 Persons</option>
@@ -855,22 +843,22 @@
               <option value="Family Members">With Family</option>
             </select>
           </div>
-          <div class="form-item-wrap">
-            <label>Events Attending</label>
+          <div class="form-field-group">
+            <label>Attending Events</label>
             <select id="rsvp_events">
               <option value="All Functions (Mehndi, Barat, Walima)">All Functions (Mehndi, Barat, Walima)</option>
               <option value="Barat & Walima">Barat & Walima</option>
               <option value="Walima Reception Only">Walima Reception Only</option>
             </select>
           </div>
-          <button type="submit" class="rsvp-whatsapp-btn">
-            <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i> Confirm via WhatsApp
+          <button type="submit" class="whatsapp-submit-btn">
+            <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i> Send via WhatsApp
           </button>
         </form>
       </div>
 
       <!-- Family Close -->
-      <div class="family-signature">
+      <div class="family-signature-box">
         <h6>Awaiting Your Warm Presence</h6>
         <p>
           Aqib Ali & Mrs. Aqib<br>
@@ -883,17 +871,17 @@
   </div>
 
   <script>
-    // 1. Cinematic Envelope Sequence
-    const audioTrack = document.getElementById('weddingTrack');
+    // 1. Envelope Opening Sequence (Dito Video)
+    const weddingTrack = document.getElementById('weddingTrack');
     const audioBtn = document.getElementById('audioToggleBtn');
     let isPlaying = false;
 
-    function triggerCinematicOpen() {
+    function handleWaxSealOpen() {
       const envelopeScreen = document.getElementById('envelope-screen');
-      envelopeScreen.classList.add('opened');
+      envelopeScreen.classList.add('unseal');
 
       // Music trigger
-      audioTrack.play().then(() => {
+      weddingTrack.play().then(() => {
         isPlaying = true;
         audioBtn.classList.add('playing');
       }).catch(e => console.log(e));
@@ -905,74 +893,74 @@
         origin: { y: 0.5 }
       });
 
-      // Dismiss envelope overlay to reveal Hero Arch Card
+      // Dismiss envelope to reveal Hero Arch
       setTimeout(() => {
-        envelopeScreen.classList.add('dismissed');
-      }, 1400);
+        envelopeScreen.classList.add('opened');
+      }, 1200);
     }
 
-    function toggleWeddingMusic() {
+    function toggleWeddingAudio() {
       if (isPlaying) {
-        audioTrack.pause();
+        weddingTrack.pause();
         audioBtn.classList.remove('playing');
         isPlaying = false;
       } else {
-        audioTrack.play().then(() => {
+        weddingTrack.play().then(() => {
           audioBtn.classList.add('playing');
           isPlaying = true;
         }).catch(e => console.log(e));
       }
     }
 
-    // 2. Countdown Logic (Mehndi Start: 24 Nov 2026, 08:00 PM)
-    const targetTime = new Date("November 24, 2026 20:00:00").getTime();
+    // 2. Countdown Timer
+    const targetDate = new Date("November 24, 2026 20:00:00").getTime();
     setInterval(function() {
       const now = new Date().getTime();
-      const distance = targetTime - now;
+      const diff = targetDate - now;
 
-      if (distance > 0) {
-        document.getElementById("d_val").innerText = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
-        document.getElementById("h_val").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
-        document.getElementById("m_val").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
-        document.getElementById("s_val").innerText = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
+      if (diff > 0) {
+        document.getElementById("d_val").innerText = Math.floor(diff / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+        document.getElementById("h_val").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+        document.getElementById("m_val").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+        document.getElementById("s_val").innerText = Math.floor((diff % (1000 * 60)) / 1000).toString().padStart(2, '0');
       }
     }, 1000);
 
-    // 3. Scratch to Reveal Canvas Setup (Pink Glitter Coating)
-    const sCanvas = document.getElementById('scratchCanvas');
-    const ctx = sCanvas.getContext('2d');
-    sCanvas.width = 220;
-    sCanvas.height = 190;
+    // 3. Scratch Canvas (Dito Video Glitter Heart)
+    const canvas = document.getElementById('scratchCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = 220;
+    canvas.height = 190;
 
-    function initScratchCover() {
-      ctx.fillStyle = '#d89aa7';
-      ctx.fillRect(0, 0, sCanvas.width, sCanvas.height);
+    function initGlitterHeart() {
+      ctx.fillStyle = '#d49da8';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.fillStyle = '#781c2f';
-      ctx.font = 'bold 12.5px Montserrat';
+      ctx.fillStyle = '#6c1a2d';
+      ctx.font = 'bold 12px Montserrat';
       ctx.textAlign = 'center';
       ctx.fillText('SCRATCH TO REVEAL ❤', 110, 100);
     }
-    initScratchCover();
+    initGlitterHeart();
 
-    let isScratchingActive = false;
-    let scratchedAmount = 0;
-    let hasTriggeredConfetti = false;
+    let scratching = false;
+    let scratchedUnits = 0;
+    let confettiFired = false;
 
-    function handleScratchMotion(e) {
-      if (!isScratchingActive) return;
-      const bRect = sCanvas.getBoundingClientRect();
-      const x = (e.clientX || (e.touches && e.touches[0].clientX)) - bRect.left;
-      const y = (e.clientY || (e.touches && e.touches[0].clientY)) - bRect.top;
+    function doScratch(e) {
+      if (!scratching) return;
+      const rect = canvas.getBoundingClientRect();
+      const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
+      const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
 
       ctx.globalCompositeOperation = 'destination-out';
       ctx.beginPath();
       ctx.arc(x, y, 20, 0, Math.PI * 2);
       ctx.fill();
 
-      scratchedAmount++;
-      if (scratchedAmount > 35 && !hasTriggeredConfetti) {
-        hasTriggeredConfetti = true;
+      scratchedUnits++;
+      if (scratchedUnits > 35 && !confettiFired) {
+        confettiFired = true;
         confetti({
           particleCount: 65,
           spread: 70,
@@ -981,24 +969,24 @@
       }
     }
 
-    sCanvas.addEventListener('mousedown', () => isScratchingActive = true);
-    sCanvas.addEventListener('mouseup', () => isScratchingActive = false);
-    sCanvas.addEventListener('mousemove', handleScratchMotion);
+    canvas.addEventListener('mousedown', () => scratching = true);
+    canvas.addEventListener('mouseup', () => scratching = false);
+    canvas.addEventListener('mousemove', doScratch);
 
-    sCanvas.addEventListener('touchstart', (e) => { isScratchingActive = true; handleScratchMotion(e); });
-    sCanvas.addEventListener('touchend', () => isScratchingActive = false);
-    sCanvas.addEventListener('touchmove', (e) => { handleScratchMotion(e); e.preventDefault(); });
+    canvas.addEventListener('touchstart', (e) => { scratching = true; doScratch(e); });
+    canvas.addEventListener('touchend', () => scratching = false);
+    canvas.addEventListener('touchmove', (e) => { doScratch(e); e.preventDefault(); });
 
-    // 4. WhatsApp RSVP Automation
-    function sendWhatsAppRSVP(e) {
+    // 4. WhatsApp RSVP Handling
+    function handleWhatsAppRSVP(e) {
       e.preventDefault();
       const phone = "923107959373";
       const name = document.getElementById('rsvp_name').value;
-      const guests = document.getElementById('rsvp_count').value;
+      const count = document.getElementById('rsvp_count').value;
       const events = document.getElementById('rsvp_events').value;
 
-      const message = `Assalam-o-Alaikum!%0A%0A*Wedding Confirmation*%0A*Guest Name:* ${encodeURIComponent(name)}%0A*Guests Count:* ${encodeURIComponent(guests)}%0A*Events Attending:* ${encodeURIComponent(events)}%0A%0AInsha'Allah hum zaroor shareek honge!`;
-      window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
+      const text = `Assalam-o-Alaikum!%0A%0A*Wedding Confirmation*%0A*Guest Name:* ${encodeURIComponent(name)}%0A*Guests Count:* ${encodeURIComponent(count)}%0A*Events Attending:* ${encodeURIComponent(events)}%0A%0AInsha'Allah hum zaroor shareek honge!`;
+      window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
     }
   </script>
 </body>
